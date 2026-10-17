@@ -1,0 +1,24 @@
+HUNAR NEAR ME — Android + Admin + NestJS Backend + PostGIS
+
+This is a development SOURCE bundle, not a compiled APK or a production-verified app.
+It includes UI and feature code, the admin interface, database models and setup scripts.
+
+To run on a Windows laptop:
+1. Install Node.js 22, Docker Desktop, Flutter stable SDK, and Android Studio.
+2. Open this folder in Visual Studio Code.
+3. Run PowerShell: powershell -ExecutionPolicy Bypass -File .\scripts\setup-env.ps1
+4. Start Docker Desktop; run: docker compose up -d db
+5. In backend/: npm install; npm run dev
+6. In admin/: npm install; npm run dev
+7. Open http://localhost:3000 with the admin credentials created in step 3.
+8. From the project root run: .\scripts\setup-flutter.bat
+9. In flutter_app/: flutter pub get; flutter run --dart-define=API_BASE_URL=http://10.0.2.2:4000/api
+
+See README.md for prerequisites, behavior and limitations.
+See docs/TESTING.md and docs/SECURITY_AND_RELEASE.md for next steps.
+
+IMPORTANT: EasyPaisa/JazzCash payment verification is MANUAL (transfer reference
+and optional screenshot); no provider gateway is connected.
+OTP is printed to the local backend console only in development.
+PostGIS computes straight-line GPS distance, not driving distance.
+Flutter/Docker live builds could not be executed in the creation environment.

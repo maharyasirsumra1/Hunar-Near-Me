@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: hunar
+      POSTGRES_PASSWORD: hunar_dev_password
+      POSTGRES_DB: hunar
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - hunar_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U hunar -d hunar"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+volumes:
+  hunar_pg_data:
