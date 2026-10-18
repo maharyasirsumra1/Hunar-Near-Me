@@ -1,6 +1,6 @@
 # Hunar Near Me — Android App + Admin Panel
 
-**Release type:** development source bundle / functional MVP foundation (NOT a production-certified or independently device-tested release).
+**Release type:** reorganized Android Studio source bundle / functional MVP foundation (NOT a production-certified or independently device-tested release).
 
 One Flutter app with **Customer** and **Worker** roles, a separate **Next.js 15** web administration interface, **NestJS 10** API, and **PostgreSQL 16 + PostGIS** for location calculations.
 
@@ -77,7 +77,7 @@ flutter run --dart-define=API_BASE_URL=http://10.0.2.2:4000/api
 
 `10.0.2.2` is the Android **emulator** alias for your laptop. For a physical Android phone on the same Wi-Fi, replace `10.0.2.2` with the laptop's Wi-Fi IP address; allow port 4000 through your dev firewall only as necessary. The API binds to 0.0.0.0 by default. For a live deployed server, use **HTTPS** and pass its URL with `--dart-define=API_BASE_URL=https://your-domain/api`.
 
-Android project regeneration with `flutter create` is performed by the setup script because Flutter binaries and the native project generator are not installed in this creation environment.
+Android project starter files are included. Run `scripts/setup-flutter.bat` once to generate the missing Flutter-owned Gradle wrapper and launcher artifacts, then analyze/build locally. See `docs/ANDROID_STUDIO_SETUP.md`.
 
 **7.** Build an APK *after* Flutter/Android SDK are configured and tests pass:
 

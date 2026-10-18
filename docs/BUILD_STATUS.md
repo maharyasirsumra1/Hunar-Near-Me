@@ -1,19 +1,10 @@
-# Build Status at Delivery
+# Build and preservation status (reorganized bundle)
 
-This is a source-code MVP foundation and UI integration package. It is not a compiled, production-tested APK.
-
-| Check | Result |
-|---|---|
-| ZIP generation / file existence | Passed |
-| Backend contract/source file checks | Passed (Node) |
-| TypeScript / TSX syntax transpilation | Passed (global TypeScript compiler syntax check only) |
-| Dart source delimiter validation | Passed (lexical; not an analyzer or build) |
-| Flutter analyzer + Android APK build | Not run: Flutter / Dart / Android SDK not installed in creation environment |
-| NestJS dependency install, compile, DB startup, integration tests | Not run: npm registry / Docker / PostGIS unavailable in creation environment |
-| Next.js dependency install and browser e2e tests | Not run: npm registry unavailable in creation environment |
-| Live OTP SMS provider | Not connected; local console code in development |
-| Real EasyPaisa/JazzCash merchant API | Not connected; manual transfer verification workflow only |
-| Google Maps road distance/ETA | Not connected; PostGIS straight-line GPS distance included |
-| Firebase device push | Not connected; in-app notification history included |
-
-The Windows setup instructions let a developer install dependencies and run the source locally, fix any environment-specific issues and then test all workflows. See `docs/TESTING.md` for acceptance cases. Do not market or deploy the bundle as independently verified or production-secure.
+- Original Dart widget bodies: unchanged; split verbatim into `lib/src/` Dart part files.
+- Original Next.js admin, NestJS API, and data models: unchanged.
+- Android Gradle/manifest/Kotlin host scaffold: added.
+- Missing `assets/images` declaration: removed (folder absent and no code uses bundled assets).
+- Flutter/Android build test: **NOT RUN**, required SDK tools unavailable in packaging environment.
+- Full services smoke/integration testing: **NOT RUN**, dependency installation and database unavailable.
+- The source contains more than 10 screen classes; preserved rather than deleting behavior. Proposal UI screenshots are visual references, not a pixel-perfect match guarantee.
+- Complete first-time Android setup by running `scripts/setup-flutter.bat` on a Flutter-enabled Windows computer.
