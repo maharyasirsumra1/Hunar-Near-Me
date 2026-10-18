@@ -140,33 +140,15 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                     ),
 
-                    // Team Illustration Graphic Container (Matches Screenshots Exactly)
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(20, 12, 20, 12),
+                    // Team Illustration Graphic (Clean without phone bezel borders)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 10, 16, 8),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(16),
                         child: Image.asset(
                           'assets/images/workers_team.png',
                           width: double.infinity,
-                          height: 160,
                           fit: BoxFit.contain,
-                          errorBuilder: (ctx, err, stack) => Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: kCardGreenTint,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: const [
-                                Icon(Icons.engineering, size: 40, color: kForestGreen),
-                                Icon(Icons.plumbing, size: 40, color: kForestGreen),
-                                Icon(Icons.restaurant, size: 40, color: kForestGreen),
-                                Icon(Icons.format_paint, size: 40, color: kForestGreen),
-                                Icon(Icons.build, size: 40, color: kForestGreen),
-                              ],
-                            ),
-                          ),
                         ),
                       ),
                     ),
