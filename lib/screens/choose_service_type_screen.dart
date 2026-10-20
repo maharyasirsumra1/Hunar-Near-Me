@@ -88,7 +88,16 @@ class _ChooseServiceTypeScreenState extends State<ChooseServiceTypeScreen> {
                 'Select the service you need',
                 style: TextStyle(color: kMutedText, fontSize: 11),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 4),
+              Text(
+                '${app.services.length} services available',
+                style: const TextStyle(
+                  color: kForestGreen,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 8),
               Expanded(
                 child: GridView.builder(
                   itemCount: app.services.length,
@@ -101,39 +110,79 @@ class _ChooseServiceTypeScreenState extends State<ChooseServiceTypeScreen> {
                   itemBuilder: (ctx, i) {
                     final s = app.services[i];
                     final isSelected = selectedId == s.id;
-                    return InkWell(
-                      onTap: () {
-                        setState(() => selectedId = s.id);
-                        app.selectedServiceId = s.id;
-                      },
-                      borderRadius: BorderRadius.circular(10),
-                      child: Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          color: isSelected ? kCardGreenTint : Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: isSelected
-                                ? kForestGreen
-                                : const Color(0xFFE8EFEB),
-                            width: isSelected ? 1.5 : 1,
-                          ),
+                    return Card(
+                      color: Colors.white,
+                      elevation: isSelected ? 2 : 0,
+                      shadowColor: kForestGreen.withValues(alpha: 0.12),
+                      margin: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: BorderSide(
+                          color: isSelected
+                              ? kForestGreen
+                              : const Color(0xFFE8EFEB),
+                          width: isSelected ? 1.5 : 1,
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: InkWell(
+                        onTap: () {
+                          setState(() => selectedId = s.id);
+                          app.selectedServiceId = s.id;
+                        },
+                        child: Stack(
                           children: [
-                            ServiceVectorIcon(serviceId: s.id, size: 38),
-                            const SizedBox(height: 3),
-                            Text(
-                              s.name,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 10,
-                                color: kDarkInk,
+                            Positioned(
+                              top: 5,
+                              right: 5,
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 160),
+                                width: 17,
+                                height: 17,
+                                decoration: BoxDecoration(
+                                  color: isSelected
+                                      ? kForestGreen
+                                      : Colors.transparent,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: isSelected
+                                        ? kForestGreen
+                                        : const Color(0xFFE8EFEB),
+                                  ),
+                                ),
+                                child: isSelected
+                                    ? const Icon(
+                                        Icons.check,
+                                        color: Colors.white,
+                                        size: 11,
+                                      )
+                                    : null,
                               ),
-                              textAlign: TextAlign.center,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  ServiceVectorIcon(
+                                    serviceId: s.id,
+                                    size: 38,
+                                  ),
+                                  const SizedBox(height: 3),
+                                  Text(
+                                    s.name,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 10,
+                                      color: isSelected
+                                          ? kForestGreen
+                                          : kDarkInk,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
