@@ -13,7 +13,8 @@ class ChooseServiceTypeScreen extends StatefulWidget {
   const ChooseServiceTypeScreen({super.key, required this.onNavigate});
 
   @override
-  State<ChooseServiceTypeScreen> createState() => _ChooseServiceTypeScreenState();
+  State<ChooseServiceTypeScreen> createState() =>
+      _ChooseServiceTypeScreenState();
 }
 
 class _ChooseServiceTypeScreenState extends State<ChooseServiceTypeScreen> {
@@ -24,26 +25,74 @@ class _ChooseServiceTypeScreenState extends State<ChooseServiceTypeScreen> {
     final app = AppScope.of(context);
 
     return Scaffold(
-      appBar: buildAppHeader(context, onBack: () => widget.onNavigate(1)),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        toolbarHeight: 44,
+        leadingWidth: 40,
+        leading: IconButton(
+          padding: EdgeInsets.zero,
+          constraints: const BoxConstraints.tightFor(width: 40, height: 40),
+          icon: const Icon(Icons.arrow_back, color: kForestGreen, size: 18),
+          onPressed: () => widget.onNavigate(1),
+        ),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.handyman_outlined, color: kForestGreen, size: 16),
+            const SizedBox(width: 4),
+            Text(
+              app.appName,
+              style: const TextStyle(
+                fontWeight: FontWeight.w800,
+                fontSize: 12,
+                color: kDarkInk,
+              ),
+            ),
+          ],
+        ),
+        centerTitle: true,
+        actions: [
+          TextButton(
+            onPressed: () => app.toggleLanguage(),
+            child: Text(
+              app.lang == 'en' ? 'English ⌄' : 'اردو ⌄',
+              style: const TextStyle(
+                color: kForestGreen,
+                fontWeight: FontWeight.bold,
+                fontSize: 11,
+              ),
+            ),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Choose Service Type', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: kDarkInk)),
-              const SizedBox(height: 4),
-              const Text('Select the service you need', style: TextStyle(color: kMutedText, fontSize: 13)),
-              const SizedBox(height: 16),
-
+              const Text(
+                'Choose Service Type',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: kForestGreen,
+                ),
+              ),
+              const SizedBox(height: 2),
+              const Text(
+                'Select the service you need',
+                style: TextStyle(color: kMutedText, fontSize: 11),
+              ),
+              const SizedBox(height: 10),
               Expanded(
                 child: GridView.builder(
                   itemCount: app.services.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
-                    childAspectRatio: 0.88,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 7,
+                    childAspectRatio: 1.1,
                   ),
                   itemBuilder: (ctx, i) {
                     final s = app.services[i];
@@ -53,15 +102,17 @@ class _ChooseServiceTypeScreenState extends State<ChooseServiceTypeScreen> {
                         setState(() => selectedId = s.id);
                         app.selectedServiceId = s.id;
                       },
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(10),
                       child: Container(
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
                           color: isSelected ? kCardGreenTint : Colors.white,
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: isSelected ? kForestGreen : kBorderColor,
-                            width: isSelected ? 2 : 1,
+                            color: isSelected
+                                ? kForestGreen
+                                : const Color(0xFFE8EFEB),
+                            width: isSelected ? 1.5 : 1,
                           ),
                         ),
                         child: Column(
@@ -69,13 +120,19 @@ class _ChooseServiceTypeScreenState extends State<ChooseServiceTypeScreen> {
                           children: [
                             ServiceVectorIcon(
                               serviceId: s.id,
-                              size: 56,
+                              size: 38,
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 3),
                             Text(
                               s.name,
-                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: kDarkInk),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 10,
+                                color: kDarkInk,
+                              ),
                               textAlign: TextAlign.center,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ],
                         ),
@@ -84,13 +141,35 @@ class _ChooseServiceTypeScreenState extends State<ChooseServiceTypeScreen> {
                   },
                 ),
               ),
-
-              const SizedBox(height: 12),
-              buildPillButton('Continue', () => widget.onNavigate(4)),
-              Center(
-                child: TextButton(
+              const SizedBox(height: 7),
+              SizedBox(
+                width: double.infinity,
+                height: 40,
+                child: ElevatedButton(
                   onPressed: () => widget.onNavigate(4),
-                  child: const Text('Skip for now', style: TextStyle(color: kMutedText, fontSize: 12)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: kForestGreen,
+                    foregroundColor: Colors.white,
+                    elevation: 0,
+                    padding: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Continue',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 11,
+                        ),
+                      ),
+                      SizedBox(width: 6),
+                      Icon(Icons.arrow_forward, size: 14),
+                    ],
+                  ),
                 ),
               ),
             ],

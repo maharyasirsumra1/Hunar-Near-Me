@@ -124,7 +124,6 @@
         <entry key="flutter">
           <value>
             <list>
-              <option value="$USER_HOME$/Downloads/flutter_windows_3.47.2-stable/flutter/packages/flutter/lib" />
               <option value="C:/flutter/packages/flutter/lib" />
             </list>
           </value>
@@ -189,7 +188,6 @@
         <entry key="flutter_test">
           <value>
             <list>
-              <option value="$USER_HOME$/Downloads/flutter_windows_3.47.2-stable/flutter/packages/flutter_test/lib" />
               <option value="C:/flutter/packages/flutter_test/lib" />
             </list>
           </value>
@@ -513,7 +511,6 @@
         <entry key="sky_engine">
           <value>
             <list>
-              <option value="$USER_HOME$/Downloads/flutter_windows_3.47.2-stable/flutter/bin/cache/pkg/sky_engine/lib" />
               <option value="C:/flutter/bin/cache/pkg/sky_engine/lib" />
             </list>
           </value>
@@ -792,9 +789,6 @@
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/win32-5.15.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/xdg_directories-1.1.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/yaml-3.1.4/lib" />
-      <root url="file://$USER_HOME$/Downloads/flutter_windows_3.47.2-stable/flutter/bin/cache/pkg/sky_engine/lib" />
-      <root url="file://$USER_HOME$/Downloads/flutter_windows_3.47.2-stable/flutter/packages/flutter/lib" />
-      <root url="file://$USER_HOME$/Downloads/flutter_windows_3.47.2-stable/flutter/packages/flutter_test/lib" />
       <root url="file://C:/flutter/bin/cache/pkg/sky_engine/lib" />
       <root url="file://C:/flutter/packages/flutter/lib" />
       <root url="file://C:/flutter/packages/flutter_test/lib" />
