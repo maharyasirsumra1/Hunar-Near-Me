@@ -21,6 +21,14 @@ class _WorkerRegisterScreenState extends State<WorkerRegisterScreen> {
   String selectedProfession = 'Electrician';
 
   @override
+  void dispose() {
+    nameCtrl.dispose();
+    phoneCtrl.dispose();
+    passCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppHeader(context, onBack: () => widget.onNavigate(0)),
@@ -35,24 +43,29 @@ class _WorkerRegisterScreenState extends State<WorkerRegisterScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
-                      Text('Register as Worker', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: kForestGreen)),
+                      Text('Register as Worker',
+                          style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: kForestGreen)),
                       SizedBox(height: 4),
-                      Text('Showcase your skills and get more work', style: TextStyle(color: kMutedText, fontSize: 12)),
+                      Text('Showcase your skills and get more work',
+                          style: TextStyle(color: kMutedText, fontSize: 12)),
                     ],
                   ),
                 ),
                 CircleAvatar(
                   radius: 32,
                   backgroundColor: kCardGreenTint,
-                  child: const Icon(Icons.engineering, color: kForestGreen, size: 36),
+                  child: const Icon(Icons.engineering,
+                      color: kForestGreen, size: 36),
                 ),
               ],
             ),
             const SizedBox(height: 20),
-
-            buildStepProgress(['Basic Info', 'Skills', 'Location', 'Documents', 'Done'], 0),
+            buildStepProgress(
+                ['Basic Info', 'Skills', 'Location', 'Documents', 'Done'], 0),
             const SizedBox(height: 24),
-
             buildCustomInputField(
               label: 'Full Name',
               controller: nameCtrl,
@@ -74,31 +87,67 @@ class _WorkerRegisterScreenState extends State<WorkerRegisterScreen> {
               isPassword: true,
               footnote: 'Password must be at least 8 characters',
             ),
-
-            const Text('Select Your Main Profession', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: kDarkInk)),
+            const Text('Select Your Main Profession',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                    color: kDarkInk)),
             const SizedBox(height: 6),
             DropdownButtonFormField<String>(
+              isExpanded: true,
               initialValue: selectedProfession,
               decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.work_outline, color: kMutedText, size: 20),
+                prefixIcon:
+                    Icon(Icons.work_outline, color: kMutedText, size: 20),
               ),
               items: const [
-                DropdownMenuItem(value: 'Electrician', child: Text('Electrician (بجلی کا کام)')),
-                DropdownMenuItem(value: 'Plumber', child: Text('Plumber (پلمبر)')),
-                DropdownMenuItem(value: 'AC Repair', child: Text('AC Repair (اے سی ریپئر)')),
-                DropdownMenuItem(value: 'Mechanic', child: Text('Mechanic (میکینک)')),
-                DropdownMenuItem(value: 'Painter', child: Text('Painter (پینٹر)')),
+                DropdownMenuItem(
+                    value: 'Electrician',
+                    child: Text(
+                      'Electrician (بجلی کا کام)',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    )),
+                DropdownMenuItem(
+                    value: 'Plumber',
+                    child: Text(
+                      'Plumber (پلمبر)',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    )),
+                DropdownMenuItem(
+                    value: 'AC Repair',
+                    child: Text(
+                      'AC Repair (اے سی ریپئر)',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    )),
+                DropdownMenuItem(
+                    value: 'Mechanic',
+                    child: Text(
+                      'Mechanic (میکینک)',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    )),
+                DropdownMenuItem(
+                    value: 'Painter',
+                    child: Text(
+                      'Painter (پینٹر)',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    )),
               ],
               onChanged: (val) {
                 if (val != null) setState(() => selectedProfession = val);
               },
             ),
-
             const SizedBox(height: 24),
             buildPillButton('Continue', () => widget.onNavigate(3)),
             const SizedBox(height: 16),
             const Center(
-              child: Text('By continuing, you agree to our Terms & Privacy Policy', style: TextStyle(fontSize: 11, color: kMutedText)),
+              child: Text(
+                  'By continuing, you agree to our Terms & Privacy Policy',
+                  style: TextStyle(fontSize: 11, color: kMutedText)),
             ),
           ],
         ),

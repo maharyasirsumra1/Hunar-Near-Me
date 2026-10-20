@@ -24,7 +24,9 @@ class WorkerDetailScreen extends StatelessWidget {
           Card(
             color: Colors.white,
             elevation: 0,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: kBorderColor)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+                side: const BorderSide(color: kBorderColor)),
             child: Padding(
               padding: const EdgeInsets.all(18.0),
               child: Column(
@@ -32,31 +34,48 @@ class WorkerDetailScreen extends StatelessWidget {
                   CircleAvatar(
                     radius: 40,
                     backgroundColor: kCardGreenTint,
-                    child: const Icon(Icons.engineering, color: kForestGreen, size: 40),
+                    child: const Icon(Icons.engineering,
+                        color: kForestGreen, size: 40),
                   ),
                   const SizedBox(height: 10),
-                  Text(worker.name, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: kDarkInk)),
+                  Text(worker.name,
+                      style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: kDarkInk)),
                   const SizedBox(height: 4),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 4,
                     children: const [
                       Icon(Icons.verified, color: kForestGreen, size: 16),
-                      SizedBox(width: 4),
-                      Text('Verified Skilled Worker', style: TextStyle(color: kForestGreen, fontWeight: FontWeight.bold, fontSize: 12)),
+                      Text('Verified Skilled Worker',
+                          style: TextStyle(
+                              color: kForestGreen,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12)),
                     ],
                   ),
                   const SizedBox(height: 8),
-                  Text('⭐ ${worker.ratingAverage} / 5  •  ${worker.ratingCount} reviews  •  ${worker.completedJobs} jobs done', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                  Text(
+                      '⭐ ${worker.ratingAverage} / 5  •  ${worker.ratingCount} reviews  •  ${worker.completedJobs} jobs done',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 12)),
                 ],
               ),
             ),
           ),
           const SizedBox(height: 16),
-          const Text('About Worker', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kDarkInk)),
+          const Text('About Worker',
+              style: TextStyle(
+                  fontSize: 16, fontWeight: FontWeight.bold, color: kDarkInk)),
           const SizedBox(height: 4),
-          Text(worker.bio, style: const TextStyle(color: kMutedText, fontSize: 13)),
+          Text(worker.bio,
+              style: const TextStyle(color: kMutedText, fontSize: 13)),
           const SizedBox(height: 24),
-          buildPillButton('Request Service & Propose Price', () => onNavigate(7)),
+          buildPillButton(
+              'Request Service & Propose Price', () => onNavigate(7)),
         ],
       ),
     );

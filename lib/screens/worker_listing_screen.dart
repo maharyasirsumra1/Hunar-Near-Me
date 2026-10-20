@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../providers/app_state.dart';
 import '../theme/app_theme.dart';
 
@@ -22,7 +23,10 @@ class WorkerListingScreen extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(color: kCardGreenTint, borderRadius: BorderRadius.circular(14)),
+            decoration: BoxDecoration(
+              color: kCardGreenTint,
+              borderRadius: BorderRadius.circular(14),
+            ),
             child: Row(
               children: [
                 const Icon(Icons.location_on, color: kForestGreen, size: 22),
@@ -30,7 +34,11 @@ class WorkerListingScreen extends StatelessWidget {
                 Expanded(
                   child: Text(
                     'Workers near ${app.getLocationName(app.selectedArea)}, ${app.getLocationName(app.selectedCity)}',
-                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: kDarkInk),
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: kDarkInk,
+                    ),
                   ),
                 ),
               ],
@@ -45,7 +53,11 @@ class WorkerListingScreen extends StatelessWidget {
                 const Expanded(
                   child: Text(
                     'Trusted professionals',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kDarkInk),
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: kDarkInk,
+                    ),
                   ),
                 ),
                 Text(
@@ -62,7 +74,10 @@ class WorkerListingScreen extends StatelessWidget {
               elevation: 1,
               shadowColor: kDarkInk.withValues(alpha: 0.06),
               margin: const EdgeInsets.only(bottom: 14),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18), side: const BorderSide(color: kBorderColor)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18),
+                side: const BorderSide(color: kBorderColor),
+              ),
               child: InkWell(
                 onTap: () => onNavigate(6),
                 borderRadius: BorderRadius.circular(18),
@@ -74,7 +89,11 @@ class WorkerListingScreen extends StatelessWidget {
                       CircleAvatar(
                         radius: 27,
                         backgroundColor: kCardGreenTint,
-                        child: const Icon(Icons.engineering_outlined, color: kForestGreen, size: 28),
+                        child: const Icon(
+                          Icons.engineering_outlined,
+                          color: kForestGreen,
+                          size: 28,
+                        ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
@@ -86,26 +105,41 @@ class WorkerListingScreen extends StatelessWidget {
                                 Expanded(
                                   child: Text(
                                     w.name,
-                                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: kDarkInk),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                      color: kDarkInk,
+                                    ),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                                 if (w.verifiedBadge) ...[
                                   const SizedBox(width: 4),
-                                  const Icon(Icons.verified, color: kForestGreen, size: 17),
+                                  const Icon(
+                                    Icons.verified,
+                                    color: kForestGreen,
+                                    size: 17,
+                                  ),
                                 ],
                               ],
                             ),
                             const SizedBox(height: 4),
                             Row(
                               children: [
-                                const Icon(Icons.location_on_outlined, color: kMutedText, size: 14),
+                                const Icon(
+                                  Icons.location_on_outlined,
+                                  color: kMutedText,
+                                  size: 14,
+                                ),
                                 const SizedBox(width: 3),
                                 Expanded(
                                   child: Text(
                                     '${app.getLocationName(w.areaId)}, ${app.getLocationName(w.cityId)}',
-                                    style: const TextStyle(color: kMutedText, fontSize: 12),
+                                    style: const TextStyle(
+                                      color: kMutedText,
+                                      fontSize: 12,
+                                    ),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -117,37 +151,88 @@ class WorkerListingScreen extends StatelessWidget {
                               spacing: 6,
                               runSpacing: 4,
                               children: app.services
-                                  .where((service) => w.serviceIds.contains(service.id))
+                                  .where(
+                                    (service) =>
+                                        w.serviceIds.contains(service.id),
+                                  )
                                   .take(2)
                                   .map(
                                     (service) => Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 4,
+                                      ),
                                       decoration: BoxDecoration(
                                         color: kLightGreenBackground,
                                         borderRadius: BorderRadius.circular(20),
                                       ),
                                       child: Text(
                                         service.name,
-                                        style: const TextStyle(color: kForestGreen, fontSize: 10, fontWeight: FontWeight.w600),
+                                        style: const TextStyle(
+                                          color: kForestGreen,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
                                     ),
                                   )
                                   .toList(),
                             ),
                             const SizedBox(height: 8),
-                            Row(
+                            Wrap(
+                              spacing: 6,
+                              runSpacing: 4,
+                              crossAxisAlignment: WrapCrossAlignment.center,
                               children: [
-                                const Icon(Icons.star_rounded, color: Colors.amber, size: 17),
-                                const SizedBox(width: 3),
-                                Text(
-                                  w.ratingAverage.toStringAsFixed(1),
-                                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: kDarkInk),
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(
+                                      Icons.star_rounded,
+                                      color: Colors.amber,
+                                      size: 17,
+                                    ),
+                                    const SizedBox(width: 3),
+                                    Text(
+                                      w.ratingAverage.toStringAsFixed(1),
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12,
+                                        color: kDarkInk,
+                                      ),
+                                    ),
+                                    Flexible(
+                                      child: Text(
+                                        ' (${w.ratingCount} reviews)',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          color: kMutedText,
+                                          fontSize: 11,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                Text(' (${w.ratingCount} reviews)', style: const TextStyle(color: kMutedText, fontSize: 11)),
-                                const Spacer(),
-                                const Icon(Icons.near_me_outlined, color: kForestGreen, size: 14),
-                                const SizedBox(width: 3),
-                                Text('${w.distanceKm} km', style: const TextStyle(color: kForestGreen, fontSize: 11, fontWeight: FontWeight.w600)),
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(
+                                      Icons.near_me_outlined,
+                                      color: kForestGreen,
+                                      size: 14,
+                                    ),
+                                    const SizedBox(width: 3),
+                                    Text(
+                                      '${w.distanceKm} km',
+                                      style: const TextStyle(
+                                        color: kForestGreen,
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           ],

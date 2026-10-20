@@ -66,7 +66,8 @@ class _HunarAppState extends State<HunarApp> {
               borderRadius: BorderRadius.circular(14),
               borderSide: const BorderSide(color: kForestGreen, width: 1.5),
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           ),
         ),
         home: const AppShellContainer(),
@@ -89,47 +90,58 @@ class _AppShellContainerState extends State<AppShellContainer> {
   Widget build(BuildContext context) {
     final List<Widget> pages = [
       WelcomeScreen(onNavigate: (index) => setState(() => activeTab = index)),
-      CustomerRegisterScreen(onNavigate: (index) => setState(() => activeTab = index)),
-      WorkerRegisterScreen(onNavigate: (index) => setState(() => activeTab = index)),
-      ChooseServiceTypeScreen(onNavigate: (index) => setState(() => activeTab = index)),
-      LocationSelectionScreen(onNavigate: (index) => setState(() => activeTab = index)),
-      WorkerListingScreen(onNavigate: (index) => setState(() => activeTab = index)),
-      WorkerDetailScreen(onNavigate: (index) => setState(() => activeTab = index)),
-      WebAdminPanelScreen(onNavigate: (index) => setState(() => activeTab = index)),
+      CustomerRegisterScreen(
+          onNavigate: (index) => setState(() => activeTab = index)),
+      WorkerRegisterScreen(
+          onNavigate: (index) => setState(() => activeTab = index)),
+      ChooseServiceTypeScreen(
+          onNavigate: (index) => setState(() => activeTab = index)),
+      LocationSelectionScreen(
+          onNavigate: (index) => setState(() => activeTab = index)),
+      WorkerListingScreen(
+          onNavigate: (index) => setState(() => activeTab = index)),
+      WorkerDetailScreen(
+          onNavigate: (index) => setState(() => activeTab = index)),
+      WebAdminPanelScreen(
+          onNavigate: (index) => setState(() => activeTab = index)),
     ];
 
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            // TOP CHROME DEMO NAVIGATION BAR
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              color: kDarkInk,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    const Icon(Icons.handyman, color: Colors.amber, size: 20),
-                    const SizedBox(width: 8),
-                    const Text(
-                      'Hunar Near Me (ہنر آپ کے قریب)',
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
-                    ),
-                    const SizedBox(width: 16),
-                    _buildDemoNavChip('1. Welcome', 0),
-                    _buildDemoNavChip('2. Customer Signup', 1),
-                    _buildDemoNavChip('3. Worker Signup', 2),
-                    _buildDemoNavChip('4. Choose Service', 3),
-                    _buildDemoNavChip('5. Location', 4),
-                    _buildDemoNavChip('6. Worker Search', 5),
-                    _buildDemoNavChip('7. Worker Profile', 6),
-                    _buildDemoNavChip('8. Web Admin Panel', 7, isSpecial: true),
-                  ],
+            if (MediaQuery.sizeOf(context).width >= 600)
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                color: kDarkInk,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      const Icon(Icons.handyman, color: Colors.amber, size: 20),
+                      const SizedBox(width: 8),
+                      const Text(
+                        'Hunar Near Me (ہنر آپ کے قریب)',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13),
+                      ),
+                      const SizedBox(width: 16),
+                      _buildDemoNavChip('1. Welcome', 0),
+                      _buildDemoNavChip('2. Customer Signup', 1),
+                      _buildDemoNavChip('3. Worker Signup', 2),
+                      _buildDemoNavChip('4. Choose Service', 3),
+                      _buildDemoNavChip('5. Location', 4),
+                      _buildDemoNavChip('6. Worker Search', 5),
+                      _buildDemoNavChip('7. Worker Profile', 6),
+                      _buildDemoNavChip('8. Web Admin Panel', 7,
+                          isSpecial: true),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            // MAIN CENTERED APP DISPLAY
             Expanded(
               child: Center(
                 child: Container(
@@ -155,7 +167,9 @@ class _AppShellContainerState extends State<AppShellContainer> {
           style: TextStyle(
             fontSize: 11,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-            color: isSelected ? (isSpecial ? Colors.amber : kDarkInk) : Colors.white,
+            color: isSelected
+                ? (isSpecial ? Colors.amber : kDarkInk)
+                : Colors.white,
           ),
         ),
         selected: isSelected,

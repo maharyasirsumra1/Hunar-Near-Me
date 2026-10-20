@@ -36,16 +36,19 @@ class _ChooseServiceTypeScreenState extends State<ChooseServiceTypeScreen> {
           onPressed: () => widget.onNavigate(1),
         ),
         title: Row(
-          mainAxisSize: MainAxisSize.min,
           children: [
             const Icon(Icons.handyman_outlined, color: kForestGreen, size: 16),
             const SizedBox(width: 4),
-            Text(
-              app.appName,
-              style: const TextStyle(
-                fontWeight: FontWeight.w800,
-                fontSize: 12,
-                color: kDarkInk,
+            Flexible(
+              child: Text(
+                app.appName,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 12,
+                  color: kDarkInk,
+                ),
               ),
             ),
           ],

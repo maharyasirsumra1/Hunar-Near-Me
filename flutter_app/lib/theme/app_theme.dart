@@ -12,23 +12,34 @@ const Color kDarkInk = Color(0xFF123D30);
 const Color kMutedText = Color(0xFF70847C);
 const Color kBorderColor = Color(0xFFDFEAE4);
 
-PreferredSizeWidget buildAppHeader(BuildContext context, {VoidCallback? onBack}) {
+PreferredSizeWidget buildAppHeader(BuildContext context,
+    {VoidCallback? onBack}) {
   final app = AppScope.of(context);
   return AppBar(
+    leadingWidth: onBack != null ? 44 : null,
     leading: onBack != null
         ? IconButton(
-            icon: const Icon(Icons.arrow_back, color: kDarkInk),
+            padding: EdgeInsets.zero,
+            icon: const Icon(Icons.arrow_back, color: kDarkInk, size: 20),
             onPressed: onBack,
           )
         : null,
+    titleSpacing: 4,
     title: Row(
-      mainAxisSize: MainAxisSize.min,
       children: [
         const Icon(Icons.handyman_outlined, color: kForestGreen, size: 22),
         const SizedBox(width: 6),
-        Text(
-          app.appName,
-          style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 17, color: kDarkInk),
+        Flexible(
+          child: Text(
+            app.appName,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontWeight: FontWeight.w800,
+              fontSize: 15,
+              color: kDarkInk,
+            ),
+          ),
         ),
       ],
     ),
@@ -36,16 +47,26 @@ PreferredSizeWidget buildAppHeader(BuildContext context, {VoidCallback? onBack})
     actions: [
       TextButton(
         onPressed: () => app.toggleLanguage(),
+        style: TextButton.styleFrom(
+          minimumSize: const Size(48, 40),
+          padding: const EdgeInsets.symmetric(horizontal: 6),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        ),
         child: Text(
           app.lang == 'en' ? 'English ⌄' : 'اردو ⌄',
-          style: const TextStyle(color: kForestGreen, fontWeight: FontWeight.bold, fontSize: 13),
+          style: const TextStyle(
+            color: kForestGreen,
+            fontWeight: FontWeight.bold,
+            fontSize: 11,
+          ),
         ),
       ),
     ],
   );
 }
 
-Widget buildPillButton(String title, VoidCallback onTap, {IconData? leadingIcon, bool outline = false}) {
+Widget buildPillButton(String title, VoidCallback onTap,
+    {IconData? leadingIcon, bool outline = false}) {
   return SizedBox(
     width: double.infinity,
     height: 52,
@@ -54,16 +75,23 @@ Widget buildPillButton(String title, VoidCallback onTap, {IconData? leadingIcon,
             onPressed: onTap,
             style: OutlinedButton.styleFrom(
               side: const BorderSide(color: kForestGreen, width: 1.5),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30)),
               padding: const EdgeInsets.symmetric(horizontal: 16),
             ),
             child: Row(
               children: [
-                if (leadingIcon != null) ...[Icon(leadingIcon, color: kForestGreen, size: 20), const SizedBox(width: 8)],
+                if (leadingIcon != null) ...[
+                  Icon(leadingIcon, color: kForestGreen, size: 20),
+                  const SizedBox(width: 8)
+                ],
                 Expanded(
                   child: Text(
                     title,
-                    style: const TextStyle(color: kForestGreen, fontWeight: FontWeight.bold, fontSize: 14),
+                    style: const TextStyle(
+                        color: kForestGreen,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -77,16 +105,23 @@ Widget buildPillButton(String title, VoidCallback onTap, {IconData? leadingIcon,
               backgroundColor: kForestGreen,
               foregroundColor: Colors.white,
               elevation: 0,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30)),
               padding: const EdgeInsets.symmetric(horizontal: 16),
             ),
             child: Row(
               children: [
-                if (leadingIcon != null) ...[Icon(leadingIcon, color: Colors.white, size: 20), const SizedBox(width: 8)],
+                if (leadingIcon != null) ...[
+                  Icon(leadingIcon, color: Colors.white, size: 20),
+                  const SizedBox(width: 8)
+                ],
                 Expanded(
                   child: Text(
                     title,
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -116,7 +151,8 @@ Widget buildStepProgress(List<String> steps, int currentStep) {
                   ),
                 CircleAvatar(
                   radius: 14,
-                  backgroundColor: isDone ? kForestGreen : const Color(0xFFE1E9E5),
+                  backgroundColor:
+                      isDone ? kForestGreen : const Color(0xFFE1E9E5),
                   child: Text(
                     '${i + 1}',
                     style: TextStyle(
@@ -164,7 +200,9 @@ Widget buildCustomInputField({
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: kDarkInk)),
+      Text(label,
+          style: const TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 13, color: kDarkInk)),
       const SizedBox(height: 6),
       TextField(
         controller: controller,
@@ -172,29 +210,51 @@ Widget buildCustomInputField({
         keyboardType: isPhone ? TextInputType.phone : TextInputType.text,
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: const TextStyle(color: kMutedText, fontSize: 13),
+          hintStyle: const TextStyle(color: kMutedText, fontSize: 12),
+          isDense: true,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 12,
+          ),
           prefixIcon: isPhone
               ? Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const SizedBox(width: 12),
-                    Icon(prefixIcon, color: kMutedText, size: 20),
                     const SizedBox(width: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: kLightGreenBackground,
-                        borderRadius: BorderRadius.circular(6),
+                    Icon(prefixIcon, color: kMutedText, size: 18),
+                    const SizedBox(width: 5),
+                    Flexible(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 5,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: kLightGreenBackground,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: const Text(
+                          '🇵🇰 +92',
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 11,
+                            color: kDarkInk,
+                          ),
+                        ),
                       ),
-                      child: const Text('🇵🇰 +92', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: kDarkInk)),
                     ),
-                    const SizedBox(width: 8),
-                    Container(width: 1, height: 20, color: kBorderColor),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 6),
                   ],
                 )
               : Icon(prefixIcon, color: kMutedText, size: 20),
-          suffixIcon: isPassword ? const Icon(Icons.visibility_outlined, color: kMutedText, size: 20) : null,
+          prefixIconConstraints: isPhone
+              ? const BoxConstraints(minWidth: 92, minHeight: 44)
+              : null,
+          suffixIcon: isPassword
+              ? const Icon(Icons.visibility_outlined,
+                  color: kMutedText, size: 20)
+              : null,
         ),
       ),
       if (footnote != null) ...[

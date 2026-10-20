@@ -22,7 +22,8 @@ class WorkerListingScreen extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(color: kCardGreenTint, borderRadius: BorderRadius.circular(14)),
+            decoration: BoxDecoration(
+                color: kCardGreenTint, borderRadius: BorderRadius.circular(14)),
             child: Row(
               children: [
                 const Icon(Icons.location_on, color: kForestGreen, size: 22),
@@ -30,20 +31,24 @@ class WorkerListingScreen extends StatelessWidget {
                 Expanded(
                   child: Text(
                     'Workers near ${app.getLocationName(app.selectedArea)}, ${app.getLocationName(app.selectedCity)}',
-                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: kDarkInk),
+                    style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: kDarkInk),
                   ),
                 ),
               ],
             ),
           ),
           const SizedBox(height: 16),
-
           for (final w in app.workers)
             Card(
               color: Colors.white,
               elevation: 0,
               margin: const EdgeInsets.only(bottom: 12),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: kBorderColor)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  side: const BorderSide(color: kBorderColor)),
               child: InkWell(
                 onTap: () => onNavigate(6),
                 borderRadius: BorderRadius.circular(16),
@@ -54,7 +59,8 @@ class WorkerListingScreen extends StatelessWidget {
                       CircleAvatar(
                         radius: 30,
                         backgroundColor: kCardGreenTint,
-                        child: const Icon(Icons.engineering, color: kForestGreen, size: 30),
+                        child: const Icon(Icons.engineering,
+                            color: kForestGreen, size: 30),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
@@ -63,19 +69,58 @@ class WorkerListingScreen extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                Text(w.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: kDarkInk)),
-                                if (w.verifiedBadge) const Icon(Icons.verified, color: kForestGreen, size: 16),
+                                Expanded(
+                                  child: Text(
+                                    w.name,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                      color: kDarkInk,
+                                    ),
+                                  ),
+                                ),
+                                if (w.verifiedBadge)
+                                  const Icon(Icons.verified,
+                                      color: kForestGreen, size: 16),
                               ],
                             ),
                             const SizedBox(height: 2),
-                            Text('${app.getLocationName(w.areaId)}, ${app.getLocationName(w.cityId)}', style: const TextStyle(color: kMutedText, fontSize: 12)),
+                            Text(
+                              '${app.getLocationName(w.areaId)}, ${app.getLocationName(w.cityId)}',
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  color: kMutedText, fontSize: 12),
+                            ),
                             const SizedBox(height: 6),
-                            Row(
+                            Wrap(
+                              spacing: 8,
+                              runSpacing: 4,
+                              crossAxisAlignment: WrapCrossAlignment.center,
                               children: [
-                                const Icon(Icons.star, color: Colors.amber, size: 15),
-                                Text(' ${w.ratingAverage} (${w.ratingCount} reviews)', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                                const SizedBox(width: 10),
-                                Text('📍 ${w.distanceKm} km', style: const TextStyle(color: kForestGreen, fontSize: 12)),
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(Icons.star,
+                                        color: Colors.amber, size: 15),
+                                    Flexible(
+                                      child: Text(
+                                        ' ${w.ratingAverage} (${w.ratingCount} reviews)',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Text('📍 ${w.distanceKm} km',
+                                    style: const TextStyle(
+                                        color: kForestGreen, fontSize: 12)),
                               ],
                             ),
                           ],

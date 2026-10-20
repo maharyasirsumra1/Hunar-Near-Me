@@ -39,14 +39,16 @@ class _LoginScreenState extends State<LoginScreen> {
               child: CircleAvatar(
                 radius: 36,
                 backgroundColor: kCardGreenTint,
-                child: const Icon(Icons.lock_outline, color: kForestGreen, size: 36),
+                child: const Icon(Icons.lock_outline,
+                    color: kForestGreen, size: 36),
               ),
             ),
             const SizedBox(height: 16),
             const Center(
               child: Text(
                 'Welcome Back',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: kDarkInk),
+                style: TextStyle(
+                    fontSize: 24, fontWeight: FontWeight.bold, color: kDarkInk),
               ),
             ),
             const SizedBox(height: 6),
@@ -58,7 +60,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             const SizedBox(height: 28),
-
             buildCustomInputField(
               label: 'Mobile Number',
               controller: phoneCtrl,
@@ -73,31 +74,40 @@ class _LoginScreenState extends State<LoginScreen> {
               prefixIcon: Icons.lock_outline,
               isPassword: true,
             ),
-
             const SizedBox(height: 10),
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Password reset link sent to your registered mobile number.')),
+                    const SnackBar(
+                        content: Text(
+                            'Password reset link sent to your registered mobile number.')),
                   );
                 },
-                child: const Text('Forgot Password?', style: TextStyle(color: kForestGreen, fontWeight: FontWeight.bold, fontSize: 12)),
+                child: const Text('Forgot Password?',
+                    style: TextStyle(
+                        color: kForestGreen,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12)),
               ),
             ),
-
             const SizedBox(height: 16),
             buildPillButton('Sign In', _doLogin, leadingIcon: Icons.login),
-
             const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Wrap(
+              alignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                const Text('Don\'t have an account? ', style: TextStyle(fontSize: 13, color: kMutedText)),
+                const Text('Don\'t have an account? ',
+                    style: TextStyle(fontSize: 13, color: kMutedText)),
                 GestureDetector(
                   onTap: () => widget.onNavigate(1),
-                  child: const Text('Register Now', style: TextStyle(color: kForestGreen, fontWeight: FontWeight.bold, fontSize: 13)),
+                  child: const Text('Register Now',
+                      style: TextStyle(
+                          color: kForestGreen,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13)),
                 ),
               ],
             ),
