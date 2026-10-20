@@ -22,25 +22,60 @@ class WorkerListingScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: kCardGreenTint,
-              borderRadius: BorderRadius.circular(14),
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [kCardGreenTint, Color(0xFFF8FBF9)],
+              ),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: kBorderColor),
             ),
             child: Row(
               children: [
-                const Icon(Icons.location_on, color: kForestGreen, size: 22),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    'Workers near ${app.getLocationName(app.selectedArea)}, ${app.getLocationName(app.selectedCity)}',
-                    style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: kDarkInk,
-                    ),
+                Container(
+                  width: 42,
+                  height: 42,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(13),
+                  ),
+                  child: const Icon(
+                    Icons.location_on_outlined,
+                    color: kForestGreen,
+                    size: 22,
                   ),
                 ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'PROFESSIONALS NEAR YOU',
+                        style: TextStyle(
+                          color: kMutedText,
+                          fontSize: 9,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.7,
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        '${app.getLocationName(app.selectedArea)}, ${app.getLocationName(app.selectedCity)}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: kDarkInk,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const Icon(Icons.tune_rounded, color: kForestGreen, size: 19),
               ],
             ),
           ),
@@ -149,6 +184,21 @@ class WorkerListingScreen extends StatelessWidget {
                             const SizedBox(height: 8),
                             Wrap(
                               spacing: 6,
+                              runSpacing: 6,
+                              children: [
+                                _WorkerInfoBadge(
+                                  icon: Icons.work_outline,
+                                  label: '${w.experienceYears} yrs experience',
+                                ),
+                                _WorkerInfoBadge(
+                                  icon: Icons.task_alt,
+                                  label: '${w.completedJobs} jobs',
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Wrap(
+                              spacing: 6,
                               runSpacing: 4,
                               children: app.services
                                   .where(
@@ -247,6 +297,40 @@ class WorkerListingScreen extends StatelessWidget {
                 ),
               ),
             ),
+        ],
+      ),
+    );
+  }
+}
+
+class _WorkerInfoBadge extends StatelessWidget {
+  final IconData icon;
+  final String label;
+
+  const _WorkerInfoBadge({required this.icon, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF7F9F8),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: kBorderColor),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: kMutedText, size: 12),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: const TextStyle(
+              color: kDarkInk,
+              fontSize: 10,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ],
       ),
     );
