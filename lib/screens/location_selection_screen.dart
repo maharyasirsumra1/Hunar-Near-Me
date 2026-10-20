@@ -58,7 +58,69 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen> {
                       const SizedBox(height: 20),
 
                       buildStepProgress(['Basic Info', 'Location', 'Done'], 1),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 20),
+                      Container(
+                        padding: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [kCardGreenTint, Color(0xFFF7FBF8)],
+                          ),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: kBorderColor),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 42,
+                              height: 42,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(13),
+                              ),
+                              child: const Icon(
+                                Icons.location_on_outlined,
+                                color: kForestGreen,
+                                size: 23,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Your service area',
+                                    style: TextStyle(
+                                      color: kMutedText,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 3),
+                                  Text(
+                                    app.selectedArea.isEmpty
+                                        ? app.getLocationName(app.selectedCity)
+                                        : '${app.getLocationName(app.selectedArea)}, ${app.getLocationName(app.selectedCity)}',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      color: kDarkInk,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const Icon(
+                              Icons.check_circle,
+                              color: kForestGreen,
+                              size: 20,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 20),
 
                       DropdownButtonFormField<String>(
                         isExpanded: true,
@@ -81,7 +143,18 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen> {
                             .toList(),
                         onChanged: (val) {
                           if (val != null) {
-                            setState(() => app.selectedCity = val);
+                            setState(() {
+                              app.selectedCity = val;
+                              final areas = app.locations
+                                  .where(
+                                    (location) =>
+                                        location.kind == 'area' &&
+                                        location.parentId == val,
+                                  )
+                                  .toList();
+                              app.selectedArea =
+                                  areas.isNotEmpty ? areas.first.id : '';
+                            });
                           }
                         },
                       ),
@@ -89,7 +162,14 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen> {
 
                       DropdownButtonFormField<String>(
                         isExpanded: true,
-                        initialValue: app.selectedArea,
+                        initialValue: app.locations.any(
+                          (location) =>
+                              location.id == app.selectedArea &&
+                              location.kind == 'area' &&
+                              location.parentId == app.selectedCity,
+                        )
+                            ? app.selectedArea
+                            : null,
                         decoration: const InputDecoration(
                           labelText: 'Select Area / Housing Society',
                           prefixIcon: Icon(Icons.pin_drop, color: kMutedText),
