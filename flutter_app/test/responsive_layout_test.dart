@@ -116,4 +116,57 @@ void main() {
     expect(contentSize.height, greaterThanOrEqualTo(700));
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('registration screens share consistent text styling', (
+    tester,
+  ) async {
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(360, 800);
+
+    await tester.pumpWidget(
+      AppScope(
+        data: HunarAppData(),
+        child: MaterialApp(
+          home: CustomerRegisterScreen(onNavigate: (_) {}),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final customerHeading = tester.widget<Text>(
+      find.text('Register as Customer'),
+    );
+    final customerSubtitle = tester.widget<Text>(
+      find.text('Find trusted skilled professionals near you'),
+    );
+    final customerFooter = tester.widget<Text>(
+      find.text('By continuing, you agree to our Terms & Privacy Policy'),
+    );
+
+    await tester.pumpWidget(
+      AppScope(
+        data: HunarAppData(),
+        child: MaterialApp(home: WorkerRegisterScreen(onNavigate: (_) {})),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final workerHeading = tester.widget<Text>(find.text('Register as Worker'));
+    final workerSubtitle = tester.widget<Text>(
+      find.text('Showcase your skills and get more work'),
+    );
+    final workerFooter = tester.widget<Text>(
+      find.text('By continuing, you agree to our Terms & Privacy Policy'),
+    );
+
+    expect(customerHeading.style, workerHeading.style);
+    expect(customerSubtitle.style, workerSubtitle.style);
+    expect(customerFooter.style, workerFooter.style);
+    expect(tester.takeException(), isNull);
+  });
 }

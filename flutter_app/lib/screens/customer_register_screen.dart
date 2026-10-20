@@ -114,18 +114,17 @@ class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
                                       Text(
                                         'Register as Customer',
                                         style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: 22,
                                           fontWeight: FontWeight.bold,
                                           color: kForestGreen,
                                         ),
                                       ),
                                       SizedBox(height: 3),
                                       Text(
-                                        'Find trusted skilled\nprofessionals near you',
+                                        'Find trusted skilled professionals near you',
                                         style: TextStyle(
                                           color: kMutedText,
                                           fontSize: 12,
-                                          height: 1.25,
                                         ),
                                       ),
                                     ],
@@ -228,7 +227,7 @@ class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
                                     'Password must be at least 6 characters',
                                     style: TextStyle(
                                       color: kMutedText,
-                                      fontSize: 10,
+                                      fontSize: 11,
                                     ),
                                   ),
                                 ),
@@ -272,21 +271,11 @@ class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
                           ),
                           const SizedBox(height: 12),
                           const Center(
-                            child: Text.rich(
-                              TextSpan(
-                                style: TextStyle(
-                                  color: kMutedText,
-                                  fontSize: 10,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: 'By continuing, you agree to our ',
-                                  ),
-                                  TextSpan(
-                                    text: 'Terms & Privacy Policy',
-                                    style: TextStyle(color: kForestGreen),
-                                  ),
-                                ],
+                            child: Text(
+                              'By continuing, you agree to our Terms & Privacy Policy',
+                              style: TextStyle(
+                                color: kMutedText,
+                                fontSize: 11,
                               ),
                               textAlign: TextAlign.center,
                             ),
