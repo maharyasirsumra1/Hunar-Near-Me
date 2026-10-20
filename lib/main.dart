@@ -37,42 +37,7 @@ class _HunarAppState extends State<HunarApp> {
       child: MaterialApp(
         title: 'Hunar Near Me - ہنر آپ کے قریب',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          useMaterial3: true,
-          fontFamily: 'Roboto',
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: kForestGreen,
-            primary: kForestGreen,
-            surface: Colors.white,
-          ),
-          scaffoldBackgroundColor: kLightGreenBackground,
-          appBarTheme: const AppBarTheme(
-            backgroundColor: Colors.white,
-            foregroundColor: kDarkInk,
-            elevation: 0,
-            centerTitle: true,
-          ),
-          inputDecorationTheme: InputDecorationTheme(
-            filled: true,
-            fillColor: Colors.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(color: kBorderColor),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(color: kBorderColor),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(color: kForestGreen, width: 1.5),
-            ),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 14,
-            ),
-          ),
-        ),
+        theme: buildHunarTheme(),
         home: const AppShellContainer(),
       ),
     );
@@ -149,11 +114,7 @@ class _AppShellContainerState extends State<AppShellContainer> {
                       _buildDemoNavChip('5. Location', 4),
                       _buildDemoNavChip('6. Worker Search', 5),
                       _buildDemoNavChip('7. Worker Profile', 6),
-                      _buildDemoNavChip(
-                        '8. Web Admin Panel',
-                        7,
-                        isSpecial: true,
-                      ),
+                      _buildDemoNavChip('8. Web Admin Panel', 7),
                     ],
                   ),
                 ),
@@ -173,27 +134,51 @@ class _AppShellContainerState extends State<AppShellContainer> {
     );
   }
 
-  Widget _buildDemoNavChip(String label, int index, {bool isSpecial = false}) {
-    final bool isSelected = activeTab == index;
+  Widget _buildDemoNavChip(String label, int index) {
+    final isSelected = activeTab == index;
+    final foregroundColor = isSelected ? kDarkInk : Colors.white;
     return Padding(
       padding: const EdgeInsets.only(right: 6),
-      child: ChoiceChip(
-        label: Text(
-          label,
-          style: TextStyle(
-            fontSize: 11,
-            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-            color: isSelected
-                ? (isSpecial ? Colors.amber : kDarkInk)
-                : Colors.white,
+      child: Semantics(
+        button: true,
+        selected: isSelected,
+        label: label,
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () => setState(() => activeTab = index),
+            borderRadius: BorderRadius.circular(12),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+              decoration: BoxDecoration(
+                color: isSelected ? kCardGreenTint : kNavigationChipBackground,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: isSelected ? Colors.white : const Color(0xFF5A8273),
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (isSelected) ...[
+                    Icon(Icons.check_circle, color: foregroundColor, size: 14),
+                    const SizedBox(width: 5),
+                  ],
+                  Text(
+                    label,
+                    style: TextStyle(
+                      color: foregroundColor,
+                      fontSize: 12,
+                      fontWeight: isSelected
+                          ? FontWeight.bold
+                          : FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
-        selected: isSelected,
-        selectedColor: isSpecial ? kForestGreen : Colors.white,
-        backgroundColor: Colors.white24,
-        onSelected: (selected) {
-          if (selected) setState(() => activeTab = index);
-        },
       ),
     );
   }

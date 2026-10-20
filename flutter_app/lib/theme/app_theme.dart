@@ -9,8 +9,85 @@ const Color kForestGreen = Color(0xFF006B4F);
 const Color kLightGreenBackground = Color(0xFFF5FAF7);
 const Color kCardGreenTint = Color(0xFFEBF6EF);
 const Color kDarkInk = Color(0xFF123D30);
-const Color kMutedText = Color(0xFF70847C);
+const Color kMutedText = Color(0xFF52665E);
 const Color kBorderColor = Color(0xFFDFEAE4);
+const Color kNavigationChipBackground = Color(0xFF28594B);
+
+ThemeData buildHunarTheme() {
+  final baseTextTheme = ThemeData(useMaterial3: true).textTheme;
+  final colorScheme = ColorScheme.fromSeed(
+    seedColor: kForestGreen,
+    primary: kForestGreen,
+    surface: Colors.white,
+  ).copyWith(
+    primary: kForestGreen,
+    onPrimary: Colors.white,
+    secondary: kForestGreen,
+    onSecondary: Colors.white,
+    surface: Colors.white,
+    onSurface: kDarkInk,
+    onSurfaceVariant: kMutedText,
+    outline: kBorderColor,
+  );
+
+  return ThemeData(
+    useMaterial3: true,
+    fontFamily: 'Roboto',
+    colorScheme: colorScheme,
+    textTheme: baseTextTheme.apply(
+      bodyColor: kDarkInk,
+      displayColor: kDarkInk,
+    ),
+    iconTheme: const IconThemeData(color: kDarkInk),
+    scaffoldBackgroundColor: kLightGreenBackground,
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.white,
+      foregroundColor: kDarkInk,
+      elevation: 0,
+      centerTitle: true,
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: kForestGreen,
+        foregroundColor: Colors.white,
+        disabledBackgroundColor: kBorderColor,
+        disabledForegroundColor: kMutedText,
+      ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: kForestGreen,
+        side: const BorderSide(color: kForestGreen),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(foregroundColor: kForestGreen),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: Colors.white,
+      hintStyle: const TextStyle(color: kMutedText),
+      labelStyle: const TextStyle(color: kDarkInk),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: const BorderSide(color: kBorderColor),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: const BorderSide(color: kBorderColor),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: const BorderSide(color: kForestGreen, width: 1.5),
+      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+    ),
+    snackBarTheme: const SnackBarThemeData(
+      backgroundColor: kDarkInk,
+      contentTextStyle: TextStyle(color: Colors.white),
+    ),
+  );
+}
 
 PreferredSizeWidget buildAppHeader(BuildContext context,
     {VoidCallback? onBack}) {

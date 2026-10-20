@@ -12,6 +12,7 @@ import 'package:hunar_near_me/screens/welcome_screen.dart';
 import 'package:hunar_near_me/screens/worker_detail_screen.dart';
 import 'package:hunar_near_me/screens/worker_listing_screen.dart';
 import 'package:hunar_near_me/screens/worker_register_screen.dart';
+import 'package:hunar_near_me/theme/app_theme.dart';
 
 void main() {
   const viewports = [
@@ -88,6 +89,52 @@ void main() {
 
     expect(find.text('1. Welcome'), findsNothing);
     expect(find.text('Let\'s Get Started'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('desktop navigation labels have clear text and backgrounds', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(1024, 768);
+
+    await tester.pumpWidget(const HunarApp());
+    await tester.pumpAndSettle();
+
+    final selectedLabel = tester.widget<Text>(find.text('1. Welcome'));
+    final selectedButton = tester.widget<Container>(
+      find
+          .ancestor(
+            of: find.text('1. Welcome'),
+            matching: find.byType(Container),
+          )
+          .first,
+    );
+    final unselectedLabel = tester.widget<Text>(
+      find.text('2. Customer Signup'),
+    );
+    final unselectedButton = tester.widget<Container>(
+      find
+          .ancestor(
+            of: find.text('2. Customer Signup'),
+            matching: find.byType(Container),
+          )
+          .first,
+    );
+
+    expect(selectedLabel.style?.color, kDarkInk);
+    expect((selectedButton.decoration! as BoxDecoration).color, kCardGreenTint);
+    expect(unselectedLabel.style?.color, Colors.white);
+    expect(
+      (unselectedButton.decoration! as BoxDecoration).color,
+      kNavigationChipBackground,
+    );
     expect(tester.takeException(), isNull);
   });
 
