@@ -80,12 +80,23 @@ class WelcomeScreen extends StatelessWidget {
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
-                      decoration: const BoxDecoration(
-                        color: kForestGreen,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [kForestGreen, Color(0xFF168565)],
+                        ),
                         borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(24),
                           bottomRight: Radius.circular(24),
                         ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: kForestGreen.withValues(alpha: 0.16),
+                            blurRadius: 18,
+                            offset: const Offset(0, 7),
+                          ),
+                        ],
                       ),
                       child: Column(
                         children: [
@@ -143,12 +154,20 @@ class WelcomeScreen extends StatelessWidget {
                     // Team Illustration Graphic (Clean without phone bezel borders)
                     Padding(
                       padding: const EdgeInsets.fromLTRB(16, 10, 16, 8),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Image.asset(
-                          'assets/images/workers_team.png',
-                          width: double.infinity,
-                          fit: BoxFit.contain,
+                      child: Container(
+                        padding: const EdgeInsets.all(7),
+                        decoration: BoxDecoration(
+                          color: kLightGreenBackground,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: kBorderColor),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(14),
+                          child: Image.asset(
+                            'assets/images/workers_team.png',
+                            width: double.infinity,
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
                     ),
