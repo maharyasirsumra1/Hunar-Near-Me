@@ -89,7 +89,7 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('customer registration content fills the available screen', (
+  testWidgets('registration screens fill the same available screen size', (
     tester,
   ) async {
     addTearDown(() {
@@ -114,6 +114,26 @@ void main() {
       find.byKey(const ValueKey('customer-registration-content')),
     );
     expect(contentSize.height, greaterThanOrEqualTo(700));
+    final customerButtonSize = tester.getSize(
+      find.widgetWithText(ElevatedButton, 'Continue'),
+    );
+
+    await tester.pumpWidget(
+      AppScope(
+        data: HunarAppData(),
+        child: MaterialApp(home: WorkerRegisterScreen(onNavigate: (_) {})),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final workerContentSize = tester.getSize(
+      find.byKey(const ValueKey('worker-registration-content')),
+    );
+    final workerButtonSize = tester.getSize(
+      find.widgetWithText(ElevatedButton, 'Continue'),
+    );
+    expect(workerContentSize, contentSize);
+    expect(workerButtonSize.width, customerButtonSize.width);
     expect(tester.takeException(), isNull);
   });
 

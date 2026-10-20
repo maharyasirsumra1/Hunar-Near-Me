@@ -65,6 +65,148 @@ PreferredSizeWidget buildAppHeader(BuildContext context,
   );
 }
 
+class RegistrationPageLayout extends StatelessWidget {
+  final Key contentKey;
+  final Widget formContent;
+  final Widget footerContent;
+
+  const RegistrationPageLayout({
+    super.key,
+    required this.contentKey,
+    required this.formContent,
+    required this.footerContent,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      top: false,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final horizontalPadding = constraints.maxWidth < 360 ? 12.0 : 16.0;
+          final contentHeight =
+              constraints.maxHeight > 24 ? constraints.maxHeight - 24 : 0.0;
+          return SingleChildScrollView(
+            padding: EdgeInsets.fromLTRB(
+              horizontalPadding,
+              8,
+              horizontalPadding,
+              16,
+            ),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: 520,
+                  minHeight: contentHeight,
+                ),
+                child: Column(
+                  key: contentKey,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [formContent, footerContent],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class RegistrationHeroHeader extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final Alignment imageAlignment;
+  final List<IconData> badgeIcons;
+
+  const RegistrationHeroHeader({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.imageAlignment,
+    required this.badgeIcons,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: 76),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: kForestGreen,
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  subtitle,
+                  style: const TextStyle(color: kMutedText, fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            width: 90,
+            height: 72,
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Positioned(
+                  right: 10,
+                  bottom: 0,
+                  width: 72,
+                  height: 68,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(35),
+                    child: Image.asset(
+                      'assets/images/workers_team.png',
+                      fit: BoxFit.cover,
+                      alignment: imageAlignment,
+                    ),
+                  ),
+                ),
+                _buildBadge(badgeIcons[0], right: 71, top: 34),
+                _buildBadge(badgeIcons[1], right: 2, top: 5),
+                _buildBadge(badgeIcons[2], right: -1, top: 39),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBadge(
+    IconData icon, {
+    required double right,
+    required double top,
+  }) {
+    return Positioned(
+      right: right,
+      top: top,
+      child: Container(
+        width: 19,
+        height: 19,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.circle,
+        ),
+        child: Icon(icon, color: kForestGreen, size: 13),
+      ),
+    );
+  }
+}
+
 Widget buildPillButton(String title, VoidCallback onTap,
     {IconData? leadingIcon, bool outline = false}) {
   return SizedBox(
@@ -223,27 +365,32 @@ Widget buildCustomInputField({
                     const SizedBox(width: 8),
                     Icon(prefixIcon, color: kMutedText, size: 18),
                     const SizedBox(width: 5),
+                    Container(width: 1, height: 14, color: kBorderColor),
                     Flexible(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 5,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: kLightGreenBackground,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: const Text(
-                          '🇵🇰 +92',
-                          maxLines: 1,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 11,
-                            color: kDarkInk,
-                          ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text(
+                              '+92',
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 11,
+                                color: kDarkInk,
+                              ),
+                            ),
+                            const Icon(
+                              Icons.arrow_drop_down,
+                              size: 16,
+                              color: kDarkInk,
+                            ),
+                          ],
                         ),
                       ),
                     ),
+                    Container(width: 1, height: 14, color: kBorderColor),
                     const SizedBox(width: 6),
                   ],
                 )

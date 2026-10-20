@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../providers/app_state.dart';
 import '../theme/app_theme.dart';
 
 class CustomerRegisterScreen extends StatefulWidget {
@@ -63,52 +62,9 @@ class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final app = AppScope.of(context);
-
     return Scaffold(
       backgroundColor: const Color(0xFFF8FBF9),
-      appBar: AppBar(
-        toolbarHeight: 56,
-        leadingWidth: 44,
-        leading: IconButton(
-          padding: EdgeInsets.zero,
-          constraints: const BoxConstraints.tightFor(width: 38, height: 40),
-          icon: const Icon(Icons.arrow_back, color: kForestGreen, size: 17),
-          onPressed: () => widget.onNavigate(0),
-        ),
-        title: Row(
-          children: [
-            const Icon(Icons.handyman_outlined, color: kForestGreen, size: 18),
-            const SizedBox(width: 4),
-            Flexible(
-              child: Text(
-                app.appName,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w800,
-                  fontSize: 14,
-                  color: kDarkInk,
-                ),
-              ),
-            ),
-          ],
-        ),
-        centerTitle: true,
-        actions: [
-          TextButton(
-            onPressed: () => app.toggleLanguage(),
-            child: Text(
-              app.lang == 'en' ? 'English ⌄' : 'اردو ⌄',
-              style: const TextStyle(
-                color: kForestGreen,
-                fontWeight: FontWeight.w600,
-                fontSize: 11,
-              ),
-            ),
-          ),
-        ],
-      ),
+      appBar: buildAppHeader(context, onBack: () => widget.onNavigate(0)),
       body: SafeArea(
         top: false,
         child: LayoutBuilder(
@@ -138,83 +94,23 @@ class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          ConstrainedBox(
-                            constraints: const BoxConstraints(minHeight: 76),
-                            child: Row(
-                              children: [
-                                const Expanded(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Register as Customer',
-                                        style: TextStyle(
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.bold,
-                                          color: kForestGreen,
-                                        ),
-                                      ),
-                                      SizedBox(height: 3),
-                                      Text(
-                                        'Find trusted skilled professionals near you',
-                                        style: TextStyle(
-                                          color: kMutedText,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 90,
-                                  height: 72,
-                                  child: Stack(
-                                    clipBehavior: Clip.none,
-                                    children: [
-                                      Positioned(
-                                        right: 10,
-                                        bottom: 0,
-                                        width: 72,
-                                        height: 68,
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                            35,
-                                          ),
-                                          child: Image.asset(
-                                            'assets/images/workers_team.png',
-                                            fit: BoxFit.cover,
-                                            alignment: const Alignment(
-                                              -0.85,
-                                              0.2,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      _heroBadge(
-                                        icon: Icons.home,
-                                        right: 71,
-                                        top: 34,
-                                      ),
-                                      _heroBadge(
-                                        icon: Icons.verified,
-                                        right: 2,
-                                        top: 5,
-                                      ),
-                                      _heroBadge(
-                                        icon: Icons.location_on,
-                                        right: -1,
-                                        top: 39,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
+                          const RegistrationHeroHeader(
+                            title: 'Register as Customer',
+                            subtitle:
+                                'Find trusted skilled professionals near you',
+                            imageAlignment: Alignment(-0.85, 0.2),
+                            badgeIcons: [
+                              Icons.home,
+                              Icons.verified,
+                              Icons.location_on,
+                            ],
                           ),
                           const SizedBox(height: 8),
-                          _buildProgress(),
+                          buildStepProgress([
+                            'Basic Info',
+                            'Location',
+                            'Done',
+                          ], 0),
                           const SizedBox(height: 12),
                           Container(
                             padding: const EdgeInsets.fromLTRB(8, 8, 8, 7),
@@ -301,6 +197,7 @@ class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           const SizedBox(height: 16),
+<<<<<<< HEAD
                           SizedBox(
                             height: 48,
                             child: ElevatedButton(
@@ -329,6 +226,11 @@ class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
                                 ],
                               ),
                             ),
+=======
+                          buildPillButton(
+                            'Continue',
+                            () => widget.onNavigate(3),
+>>>>>>> 8299b66 (Update code)
                           ),
                           const SizedBox(height: 12),
                           const Center(
@@ -351,83 +253,6 @@ class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
     );
   }
 
-  Widget _heroBadge({
-    required IconData icon,
-    required double right,
-    required double top,
-  }) {
-    return Positioned(
-      right: right,
-      top: top,
-      child: Container(
-        width: 19,
-        height: 19,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          shape: BoxShape.circle,
-        ),
-        child: Icon(icon, color: kForestGreen, size: 13),
-      ),
-    );
-  }
-
-  Widget _buildProgress() {
-    const labels = ['Basic Info', 'Location', 'Done'];
-
-    return Column(
-      children: [
-        Row(
-          children: List.generate(labels.length, (index) {
-            final isCurrent = index == 0;
-            return Expanded(
-              child: Row(
-                children: [
-                  if (index > 0)
-                    Expanded(child: Container(height: 1, color: kBorderColor)),
-                  Container(
-                    width: 14,
-                    height: 14,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: isCurrent ? kForestGreen : const Color(0xFFE4EBE7),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Text(
-                      '${index + 1}',
-                      style: TextStyle(
-                        color: isCurrent ? Colors.white : kMutedText,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  if (index < labels.length - 1)
-                    Expanded(child: Container(height: 1, color: kBorderColor)),
-                ],
-              ),
-            );
-          }),
-        ),
-        const SizedBox(height: 2),
-        Row(
-          children: List.generate(labels.length, (index) {
-            return Expanded(
-              child: Text(
-                labels[index],
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: index == 0 ? kForestGreen : kMutedText,
-                  fontWeight: index == 0 ? FontWeight.w600 : FontWeight.normal,
-                  fontSize: 10,
-                ),
-              ),
-            );
-          }),
-        ),
-      ],
-    );
-  }
-
   Widget _buildField({
     required String label,
     required TextEditingController controller,
@@ -444,11 +269,11 @@ class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
           label,
           style: const TextStyle(
             color: kDarkInk,
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
+            fontSize: 13,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 3),
+        const SizedBox(height: 6),
         ConstrainedBox(
           constraints: const BoxConstraints(minHeight: 44),
           child: TextField(
@@ -501,11 +326,11 @@ class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
           'Mobile Number',
           style: TextStyle(
             color: kDarkInk,
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
+            fontSize: 13,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 3),
+        const SizedBox(height: 6),
         ConstrainedBox(
           constraints: const BoxConstraints(minHeight: 44),
           child: Container(
