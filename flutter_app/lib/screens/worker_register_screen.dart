@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../providers/app_state.dart';
 import '../theme/app_theme.dart';
 
 // ============================================================================
@@ -19,6 +20,35 @@ class _WorkerRegisterScreenState extends State<WorkerRegisterScreen> {
   final phoneCtrl = TextEditingController();
   final passCtrl = TextEditingController();
   String? selectedProfession;
+
+  Future<void> _registerWorker() async {
+    final name = nameCtrl.text.trim();
+    final phone = phoneCtrl.text.trim();
+    if (name.isEmpty || phone.replaceAll(RegExp(r'\D'), '').length < 10) {
+      _showMessage('Enter your name and a valid mobile number.');
+      return;
+    }
+    if (passCtrl.text.length < 6) {
+      _showMessage('Password must be at least 6 characters.');
+      return;
+    }
+    if (selectedProfession == null) {
+      _showMessage('Choose your profession.');
+      return;
+    }
+    await AppScope.of(context).registerWorker(
+      name: name,
+      phone: phone,
+      profession: selectedProfession!,
+    );
+    widget.onNavigate(3);
+  }
+
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
 
   @override
   void dispose() {
@@ -141,7 +171,7 @@ class _WorkerRegisterScreenState extends State<WorkerRegisterScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 16),
-            buildPillButton('Continue', () => widget.onNavigate(3)),
+            buildPillButton('Continue', _registerWorker),
             const SizedBox(height: 12),
             const Center(
               child: Text(

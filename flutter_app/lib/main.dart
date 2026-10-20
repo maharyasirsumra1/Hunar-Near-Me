@@ -20,57 +20,98 @@ void main() {
 }
 
 class HunarApp extends StatefulWidget {
-  const HunarApp({super.key});
+  final HunarAppData? appData;
+
+  const HunarApp({super.key, this.appData});
 
   @override
   State<HunarApp> createState() => _HunarAppState();
 }
 
 class _HunarAppState extends State<HunarApp> {
-  final HunarAppData appData = HunarAppData();
+  late final HunarAppData appData = widget.appData ?? HunarAppData();
+  late Future<void> _initialization;
+
+  @override
+  void initState() {
+    super.initState();
+    _initialization = appData.initialize();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return AppScope(
-      data: appData,
-      child: MaterialApp(
-        title: 'Hunar Near Me - ہنر آپ کے قریب',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          useMaterial3: true,
-          fontFamily: 'Roboto',
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: kForestGreen,
-            primary: kForestGreen,
-            surface: Colors.white,
-          ),
-          scaffoldBackgroundColor: kLightGreenBackground,
-          appBarTheme: const AppBarTheme(
-            backgroundColor: Colors.white,
-            foregroundColor: kDarkInk,
-            elevation: 0,
-            centerTitle: true,
-          ),
-          inputDecorationTheme: InputDecorationTheme(
-            filled: true,
-            fillColor: Colors.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(color: kBorderColor),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(color: kBorderColor),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(color: kForestGreen, width: 1.5),
-            ),
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-          ),
+    return MaterialApp(
+      title: 'Hunar Near Me - ہنر آپ کے قریب',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        useMaterial3: true,
+        fontFamily: 'Roboto',
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: kForestGreen,
+          primary: kForestGreen,
+          surface: Colors.white,
         ),
-        home: const AppShellContainer(),
+        scaffoldBackgroundColor: kLightGreenBackground,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          foregroundColor: kDarkInk,
+          elevation: 0,
+          centerTitle: true,
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide: const BorderSide(color: kBorderColor),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide: const BorderSide(color: kBorderColor),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide: const BorderSide(color: kForestGreen, width: 1.5),
+          ),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        ),
+      ),
+      home: FutureBuilder<void>(
+        future: _initialization,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Scaffold(
+              body: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text('Could not load locally saved app data.'),
+                      const SizedBox(height: 12),
+                      ElevatedButton(
+                        onPressed: () => setState(
+                          () => _initialization = appData.initialize(),
+                        ),
+                        child: const Text('Retry'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
+          if (snapshot.connectionState != ConnectionState.done) {
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
+          return AppScope(
+            data: appData,
+            child: const AppShellContainer(),
+          );
+        },
       ),
     );
   }

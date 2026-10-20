@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hunar_near_me/main.dart';
 import 'package:hunar_near_me/providers/app_state.dart';
 import 'package:hunar_near_me/screens/admin_panel_screen.dart';
@@ -73,6 +74,7 @@ void main() {
   testWidgets('mobile app shell hides the desktop demo navigation', (
     tester,
   ) async {
+    SharedPreferences.setMockInitialValues({});
     addTearDown(() {
       tester.view.resetPhysicalSize();
       tester.view.resetDevicePixelRatio();

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../providers/app_state.dart';
 import '../theme/app_theme.dart';
 
 // ============================================================================
@@ -18,9 +19,27 @@ class _LoginScreenState extends State<LoginScreen> {
   final phoneCtrl = TextEditingController(text: '3009876543');
   final passCtrl = TextEditingController(text: 'Password123');
 
-  void _doLogin() {
+  Future<void> _doLogin() async {
+    final app = AppScope.of(context);
+    final account =
+        app.localAccounts[HunarAppData.normalizePhone(phoneCtrl.text)];
+    if (account == null || passCtrl.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content:
+              Text('No matching local profile. Register first to continue.'),
+        ),
+      );
+      return;
+    }
+    await app.setCurrentUser(
+      name: account['name']!,
+      phone: phoneCtrl.text,
+      role: account['role']!,
+    );
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Logged in successfully! Welcome back.')),
+      const SnackBar(content: Text('Local profile loaded. Welcome back.')),
     );
     widget.onNavigate(3); // Go to Choose Service Catalogue
   }
@@ -54,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(height: 6),
             const Center(
               child: Text(
-                'Log in as Customer or Worker with your registered mobile number',
+                'Local offline profiles only. Passwords are not stored or verified.',
                 style: TextStyle(color: kMutedText, fontSize: 13),
                 textAlign: TextAlign.center,
               ),
@@ -82,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                         content: Text(
-                            'Password reset link sent to your registered mobile number.')),
+                            'Password reset is unavailable while the app is offline.')),
                   );
                 },
                 child: const Text('Forgot Password?',

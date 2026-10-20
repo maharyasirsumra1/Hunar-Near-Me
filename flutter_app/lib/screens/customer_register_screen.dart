@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../providers/app_state.dart';
 import '../theme/app_theme.dart';
 
 class CustomerRegisterScreen extends StatefulWidget {
@@ -15,6 +16,28 @@ class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
   final phoneCtrl = TextEditingController();
   final passCtrl = TextEditingController();
   bool _obscurePassword = true;
+
+  Future<void> _registerCustomer() async {
+    final name = nameCtrl.text.trim();
+    final phone = phoneCtrl.text.trim();
+    final password = passCtrl.text;
+    if (name.isEmpty || phone.replaceAll(RegExp(r'\D'), '').length < 10) {
+      _showMessage('Enter your name and a valid mobile number.');
+      return;
+    }
+    if (password.length < 6) {
+      _showMessage('Password must be at least 6 characters.');
+      return;
+    }
+    await AppScope.of(context).registerCustomer(name: name, phone: phone);
+    widget.onNavigate(3);
+  }
+
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
 
   @override
   void dispose() {
@@ -106,7 +129,7 @@ class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 16),
-            buildPillButton('Continue', () => widget.onNavigate(3)),
+            buildPillButton('Continue', _registerCustomer),
             const SizedBox(height: 12),
             const Center(
               child: Text(

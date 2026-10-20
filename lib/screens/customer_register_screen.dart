@@ -197,7 +197,6 @@ class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           const SizedBox(height: 16),
-<<<<<<< HEAD
                           SizedBox(
                             height: 48,
                             child: ElevatedButton(
@@ -226,11 +225,6 @@ class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
                                 ],
                               ),
                             ),
-=======
-                          buildPillButton(
-                            'Continue',
-                            () => widget.onNavigate(3),
->>>>>>> 8299b66 (Update code)
                           ),
                           const SizedBox(height: 12),
                           const Center(

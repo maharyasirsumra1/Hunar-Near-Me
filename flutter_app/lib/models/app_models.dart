@@ -22,6 +22,8 @@ class ServiceCategory {
     required this.iconColor,
     this.active = true,
   });
+
+  Map<String, dynamic> toJson() => {'id': id, 'active': active};
 }
 
 class LocationItem {
@@ -36,6 +38,8 @@ class LocationItem {
     required this.kind,
     this.parentId,
   });
+
+  Map<String, dynamic> toJson() => {'id': id};
 }
 
 class WorkerProfile {
@@ -78,6 +82,48 @@ class WorkerProfile {
     this.transactionRef,
     this.paymentStatus = 'VERIFIED',
   });
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'phone': phone,
+        'serviceIds': serviceIds,
+        'provinceId': provinceId,
+        'cityId': cityId,
+        'areaId': areaId,
+        'distanceKm': distanceKm,
+        'ratingAverage': ratingAverage,
+        'ratingCount': ratingCount,
+        'completedJobs': completedJobs,
+        'experienceYears': experienceYears,
+        'bio': bio,
+        'verifiedBadge': verifiedBadge,
+        'approvalStatus': approvalStatus,
+        'paymentMethod': paymentMethod,
+        'transactionRef': transactionRef,
+        'paymentStatus': paymentStatus,
+      };
+
+  factory WorkerProfile.fromJson(Map<String, dynamic> json) => WorkerProfile(
+        id: json['id'] as String,
+        name: json['name'] as String,
+        phone: json['phone'] as String,
+        serviceIds: List<String>.from(json['serviceIds'] as List),
+        provinceId: json['provinceId'] as String,
+        cityId: json['cityId'] as String,
+        areaId: json['areaId'] as String,
+        distanceKm: (json['distanceKm'] as num).toDouble(),
+        ratingAverage: (json['ratingAverage'] as num).toDouble(),
+        ratingCount: json['ratingCount'] as int,
+        completedJobs: json['completedJobs'] as int,
+        experienceYears: json['experienceYears'] as int,
+        bio: json['bio'] as String,
+        verifiedBadge: json['verifiedBadge'] as bool? ?? false,
+        approvalStatus: json['approvalStatus'] as String? ?? 'PENDING',
+        paymentMethod: json['paymentMethod'] as String?,
+        transactionRef: json['transactionRef'] as String?,
+        paymentStatus: json['paymentStatus'] as String?,
+      );
 }
 
 class JobBooking {
@@ -108,4 +154,34 @@ class JobBooking {
     this.ratingGiven,
     this.reviewComment,
   });
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'customerName': customerName,
+        'workerId': workerId,
+        'serviceName': serviceName,
+        'description': description,
+        'proposedPricePkr': proposedPricePkr,
+        'quotedPricePkr': quotedPricePkr,
+        'address': address,
+        'status': status,
+        'createdAt': createdAt.toIso8601String(),
+        'ratingGiven': ratingGiven,
+        'reviewComment': reviewComment,
+      };
+
+  factory JobBooking.fromJson(Map<String, dynamic> json) => JobBooking(
+        id: json['id'] as String,
+        customerName: json['customerName'] as String,
+        workerId: json['workerId'] as String,
+        serviceName: json['serviceName'] as String,
+        description: json['description'] as String,
+        proposedPricePkr: json['proposedPricePkr'] as int,
+        quotedPricePkr: json['quotedPricePkr'] as int?,
+        address: json['address'] as String,
+        status: json['status'] as String,
+        createdAt: DateTime.parse(json['createdAt'] as String),
+        ratingGiven: json['ratingGiven'] as int?,
+        reviewComment: json['reviewComment'] as String?,
+      );
 }

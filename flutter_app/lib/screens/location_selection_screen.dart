@@ -64,9 +64,10 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen> {
                             .map((l) => DropdownMenuItem(
                                 value: l.id, child: Text(l.name)))
                             .toList(),
-                        onChanged: (val) {
+                        onChanged: (val) async {
                           if (val != null) {
-                            setState(() => app.selectedCity = val);
+                            await app.updateLocation(city: val);
+                            setState(() {});
                           }
                         },
                       ),
@@ -85,15 +86,21 @@ class _LocationSelectionScreenState extends State<LocationSelectionScreen> {
                             .map((l) => DropdownMenuItem(
                                 value: l.id, child: Text(l.name)))
                             .toList(),
-                        onChanged: (val) {
+                        onChanged: (val) async {
                           if (val != null) {
-                            setState(() => app.selectedArea = val);
+                            await app.updateLocation(area: val);
+                            setState(() {});
                           }
                         },
                       ),
                       const SizedBox(height: 20),
                       OutlinedButton.icon(
-                        onPressed: () {
+                        onPressed: () async {
+                          await app.updateLocation(
+                            city: 'lahore',
+                            area: 'johar_town',
+                          );
+                          if (!context.mounted) return;
                           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                               content: Text(
                                   'GPS coordinates detected: Johar Town, Lahore')));

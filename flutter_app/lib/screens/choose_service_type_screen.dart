@@ -99,11 +99,12 @@ class _ChooseServiceTypeScreenState extends State<ChooseServiceTypeScreen> {
                   ),
                   itemBuilder: (ctx, i) {
                     final s = app.services[i];
-                    final isSelected = selectedId == s.id;
+                    final isSelected =
+                        (app.selectedServiceId ?? selectedId) == s.id;
                     return InkWell(
-                      onTap: () {
+                      onTap: () async {
                         setState(() => selectedId = s.id);
-                        app.selectedServiceId = s.id;
+                        await app.selectService(s.id);
                       },
                       borderRadius: BorderRadius.circular(10),
                       child: Container(

@@ -14,6 +14,9 @@ class WebAdminPanelScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final app = AppScope.of(context);
+    final pendingWorkers = app.workers
+        .where((worker) => worker.approvalStatus == 'PENDING')
+        .toList();
 
     return Scaffold(
       appBar: buildAppHeader(context, onBack: () => onNavigate(0)),
@@ -69,27 +72,59 @@ class WebAdminPanelScreen extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(height: 4),
-                  const Text('1 Application awaiting EasyPaisa fee review'),
-                  const SizedBox(height: 12),
-                  Align(
-                    alignment: AlignmentDirectional.centerEnd,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: kForestGreen,
-                      ),
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Worker verified successfully'),
-                          ),
-                        );
-                      },
-                      child: const Text(
-                        'Approve',
-                        style: TextStyle(color: Colors.white, fontSize: 12),
-                      ),
-                    ),
+                  Text(
+                    '${pendingWorkers.length} Applications awaiting local review',
                   ),
+                  const SizedBox(height: 12),
+                  if (pendingWorkers.isEmpty)
+                    const Text('No pending worker applications.')
+                  else
+                    for (final worker in pendingWorkers)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                '${worker.name} · ${app.services.where((service) => worker.serviceIds.contains(service.id)).map((service) => service.name).join(', ')}',
+                              ),
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: kForestGreen,
+                              ),
+                              onPressed: () async {
+                                await app.approveWorker(worker.id);
+                                if (!context.mounted) return;
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Worker approved on this device.',
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: const Text(
+                                'Approve',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              tooltip: 'Reject worker',
+                              onPressed: () async {
+                                await app.rejectWorker(worker.id);
+                              },
+                              icon: const Icon(
+                                Icons.close,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                 ],
               ),
             ),

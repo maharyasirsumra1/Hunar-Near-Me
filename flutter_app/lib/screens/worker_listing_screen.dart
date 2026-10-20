@@ -41,7 +41,9 @@ class WorkerListingScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          for (final w in app.workers)
+          for (final w in app.workers.where(
+            (worker) => worker.approvalStatus == 'APPROVED',
+          ))
             Card(
               color: Colors.white,
               elevation: 0,
