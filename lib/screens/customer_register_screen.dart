@@ -17,6 +17,41 @@ class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
   final phoneCtrl = TextEditingController();
   final passCtrl = TextEditingController();
   bool _obscurePassword = true;
+  bool _submitted = false;
+  String? _nameError;
+  String? _phoneError;
+  String? _passwordError;
+
+  void _continue() {
+    setState(() {
+      _submitted = true;
+      _nameError = nameCtrl.text.trim().length < 2
+          ? 'Enter your full name'
+          : null;
+      final phone = phoneCtrl.text.replaceAll(RegExp(r'\D'), '');
+      _phoneError = RegExp(r'^3\d{9}$').hasMatch(phone)
+          ? null
+          : 'Enter a valid 10-digit mobile number';
+      _passwordError = passCtrl.text.length < 6
+          ? 'Password must be at least 6 characters'
+          : null;
+    });
+
+    if (_nameError == null && _phoneError == null && _passwordError == null) {
+      widget.onNavigate(3);
+    }
+  }
+
+  Widget _buildError(String? message) {
+    if (message == null) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.only(left: 8, top: 3),
+      child: Text(
+        message,
+        style: TextStyle(color: Colors.red.shade700, fontSize: 11),
+      ),
+    );
+  }
 
   @override
   void dispose() {
@@ -198,9 +233,20 @@ class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
                                   controller: nameCtrl,
                                   hint: 'Enter your full name',
                                   icon: Icons.person_outline,
+                                  onChanged: (value) {
+                                    if (_submitted) {
+                                      setState(() {
+                                        _nameError = value.trim().length < 2
+                                            ? 'Enter your full name'
+                                            : null;
+                                      });
+                                    }
+                                  },
                                 ),
+                                _buildError(_nameError),
                                 const SizedBox(height: 12),
                                 _buildPhoneField(),
+                                _buildError(_phoneError),
                                 const SizedBox(height: 12),
                                 _buildField(
                                   label: 'Password',
@@ -208,6 +254,15 @@ class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
                                   hint: 'Create a password',
                                   icon: Icons.lock_outline,
                                   obscureText: _obscurePassword,
+                                  onChanged: (value) {
+                                    if (_submitted) {
+                                      setState(() {
+                                        _passwordError = value.length < 6
+                                            ? 'Password must be at least 6 characters'
+                                            : null;
+                                      });
+                                    }
+                                  },
                                   suffix: IconButton(
                                     onPressed: () => setState(
                                       () =>
@@ -249,7 +304,7 @@ class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
                           SizedBox(
                             height: 48,
                             child: ElevatedButton(
-                              onPressed: () => widget.onNavigate(3),
+                              onPressed: _continue,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: kForestGreen,
                                 foregroundColor: Colors.white,
@@ -380,6 +435,7 @@ class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
     required IconData icon,
     bool obscureText = false,
     Widget? suffix,
+    ValueChanged<String>? onChanged,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -398,6 +454,7 @@ class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
           child: TextField(
             controller: controller,
             obscureText: obscureText,
+            onChanged: onChanged,
             style: const TextStyle(color: kDarkInk, fontSize: 14),
             decoration: InputDecoration(
               hintText: hint,
@@ -479,6 +536,16 @@ class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
                   child: TextField(
                     controller: phoneCtrl,
                     keyboardType: TextInputType.phone,
+                    onChanged: (value) {
+                      if (_submitted) {
+                        final phone = value.replaceAll(RegExp(r'\D'), '');
+                        setState(() {
+                          _phoneError = RegExp(r'^3\d{9}$').hasMatch(phone)
+                              ? null
+                              : 'Enter a valid 10-digit mobile number';
+                        });
+                      }
+                    },
                     style: const TextStyle(color: kDarkInk, fontSize: 14),
                     decoration: const InputDecoration(
                       hintText: 'Enter your mobile number',
