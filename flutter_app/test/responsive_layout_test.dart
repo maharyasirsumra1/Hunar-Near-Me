@@ -88,4 +88,32 @@ void main() {
     expect(find.text('Let\'s Get Started'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('customer registration content fills the available screen', (
+    tester,
+  ) async {
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(360, 800);
+
+    await tester.pumpWidget(
+      AppScope(
+        data: HunarAppData(),
+        child: MaterialApp(
+          home: CustomerRegisterScreen(onNavigate: (_) {}),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final contentSize = tester.getSize(
+      find.byKey(const ValueKey('customer-registration-content')),
+    );
+    expect(contentSize.height, greaterThanOrEqualTo(700));
+    expect(tester.takeException(), isNull);
+  });
 }

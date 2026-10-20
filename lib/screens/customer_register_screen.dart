@@ -79,6 +79,9 @@ class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
         child: LayoutBuilder(
           builder: (context, constraints) {
             final horizontalPadding = constraints.maxWidth < 360 ? 12.0 : 16.0;
+            final contentHeight = constraints.maxHeight > 24
+                ? constraints.maxHeight - 24
+                : 0.0;
             return SingleChildScrollView(
               padding: EdgeInsets.fromLTRB(
                 horizontalPadding,
@@ -88,186 +91,213 @@ class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
               ),
               child: Center(
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 520),
+                  constraints: BoxConstraints(
+                    maxWidth: 520,
+                    minHeight: contentHeight,
+                  ),
                   child: Column(
+                    key: const ValueKey('customer-registration-content'),
                     crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(minHeight: 76),
-                        child: Row(
-                          children: [
-                            const Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Register as Customer',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: kForestGreen,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          ConstrainedBox(
+                            constraints: const BoxConstraints(minHeight: 76),
+                            child: Row(
+                              children: [
+                                const Expanded(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Register as Customer',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: kForestGreen,
+                                        ),
+                                      ),
+                                      SizedBox(height: 3),
+                                      Text(
+                                        'Find trusted skilled\nprofessionals near you',
+                                        style: TextStyle(
+                                          color: kMutedText,
+                                          fontSize: 12,
+                                          height: 1.25,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 90,
+                                  height: 72,
+                                  child: Stack(
+                                    clipBehavior: Clip.none,
+                                    children: [
+                                      Positioned(
+                                        right: 10,
+                                        bottom: 0,
+                                        width: 72,
+                                        height: 68,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            35,
+                                          ),
+                                          child: Image.asset(
+                                            'assets/images/workers_team.png',
+                                            fit: BoxFit.cover,
+                                            alignment: const Alignment(
+                                              -0.85,
+                                              0.2,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      _heroBadge(
+                                        icon: Icons.home,
+                                        right: 71,
+                                        top: 34,
+                                      ),
+                                      _heroBadge(
+                                        icon: Icons.verified,
+                                        right: 2,
+                                        top: 5,
+                                      ),
+                                      _heroBadge(
+                                        icon: Icons.location_on,
+                                        right: -1,
+                                        top: 39,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          _buildProgress(),
+                          const SizedBox(height: 12),
+                          Container(
+                            padding: const EdgeInsets.fromLTRB(8, 8, 8, 7),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(13),
+                              border: Border.all(
+                                color: const Color(0xFFF0F3F1),
+                              ),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _buildField(
+                                  label: 'Full Name',
+                                  controller: nameCtrl,
+                                  hint: 'Enter your full name',
+                                  icon: Icons.person_outline,
+                                ),
+                                const SizedBox(height: 12),
+                                _buildPhoneField(),
+                                const SizedBox(height: 12),
+                                _buildField(
+                                  label: 'Password',
+                                  controller: passCtrl,
+                                  hint: 'Create a password',
+                                  icon: Icons.lock_outline,
+                                  obscureText: _obscurePassword,
+                                  suffix: IconButton(
+                                    onPressed: () => setState(
+                                      () =>
+                                          _obscurePassword = !_obscurePassword,
+                                    ),
+                                    padding: EdgeInsets.zero,
+                                    constraints: const BoxConstraints.tightFor(
+                                      width: 30,
+                                      height: 30,
+                                    ),
+                                    icon: Icon(
+                                      _obscurePassword
+                                          ? Icons.visibility_outlined
+                                          : Icons.visibility_off_outlined,
+                                      color: kMutedText,
+                                      size: 14,
                                     ),
                                   ),
-                                  SizedBox(height: 3),
-                                  Text(
-                                    'Find trusted skilled\nprofessionals near you',
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 29, top: 3),
+                                  child: Text(
+                                    'Password must be at least 6 characters',
                                     style: TextStyle(
                                       color: kMutedText,
-                                      fontSize: 12,
-                                      height: 1.25,
+                                      fontSize: 10,
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                            SizedBox(
-                              width: 90,
-                              height: 72,
-                              child: Stack(
-                                clipBehavior: Clip.none,
-                                children: [
-                                  Positioned(
-                                    right: 10,
-                                    bottom: 0,
-                                    width: 72,
-                                    height: 68,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(35),
-                                      child: Image.asset(
-                                        'assets/images/workers_team.png',
-                                        fit: BoxFit.cover,
-                                        alignment: const Alignment(-0.85, 0.2),
-                                      ),
-                                    ),
-                                  ),
-                                  _heroBadge(
-                                    icon: Icons.home,
-                                    right: 71,
-                                    top: 34,
-                                  ),
-                                  _heroBadge(
-                                    icon: Icons.verified,
-                                    right: 2,
-                                    top: 5,
-                                  ),
-                                  _heroBadge(
-                                    icon: Icons.location_on,
-                                    right: -1,
-                                    top: 39,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 8),
-                      _buildProgress(),
-                      const SizedBox(height: 12),
-                      Container(
-                        padding: const EdgeInsets.fromLTRB(8, 8, 8, 7),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(13),
-                          border: Border.all(color: const Color(0xFFF0F3F1)),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildField(
-                              label: 'Full Name',
-                              controller: nameCtrl,
-                              hint: 'Enter your full name',
-                              icon: Icons.person_outline,
-                            ),
-                            const SizedBox(height: 12),
-                            _buildPhoneField(),
-                            const SizedBox(height: 12),
-                            _buildField(
-                              label: 'Password',
-                              controller: passCtrl,
-                              hint: 'Create a password',
-                              icon: Icons.lock_outline,
-                              obscureText: _obscurePassword,
-                              suffix: IconButton(
-                                onPressed: () => setState(
-                                  () => _obscurePassword = !_obscurePassword,
-                                ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const SizedBox(height: 16),
+                          SizedBox(
+                            height: 48,
+                            child: ElevatedButton(
+                              onPressed: () => widget.onNavigate(3),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: kForestGreen,
+                                foregroundColor: Colors.white,
+                                elevation: 0,
                                 padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints.tightFor(
-                                  width: 30,
-                                  height: 30,
-                                ),
-                                icon: Icon(
-                                  _obscurePassword
-                                      ? Icons.visibility_outlined
-                                      : Icons.visibility_off_outlined,
-                                  color: kMutedText,
-                                  size: 14,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
+                              child: const Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    'Continue',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  SizedBox(width: 6),
+                                  Icon(Icons.arrow_forward, size: 16),
+                                ],
+                              ),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.only(left: 29, top: 3),
-                              child: Text(
-                                'Password must be at least 6 characters',
+                          ),
+                          const SizedBox(height: 12),
+                          const Center(
+                            child: Text.rich(
+                              TextSpan(
                                 style: TextStyle(
                                   color: kMutedText,
                                   fontSize: 10,
                                 ),
+                                children: [
+                                  TextSpan(
+                                    text: 'By continuing, you agree to our ',
+                                  ),
+                                  TextSpan(
+                                    text: 'Terms & Privacy Policy',
+                                    style: TextStyle(color: kForestGreen),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      SizedBox(
-                        height: 48,
-                        child: ElevatedButton(
-                          onPressed: () => widget.onNavigate(3),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: kForestGreen,
-                            foregroundColor: Colors.white,
-                            elevation: 0,
-                            padding: EdgeInsets.zero,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                              textAlign: TextAlign.center,
                             ),
                           ),
-                          child: const Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                'Continue',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                ),
-                              ),
-                              SizedBox(width: 6),
-                              Icon(Icons.arrow_forward, size: 16),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      const Center(
-                        child: Text.rich(
-                          TextSpan(
-                            style: TextStyle(color: kMutedText, fontSize: 10),
-                            children: [
-                              TextSpan(
-                                text: 'By continuing, you agree to our ',
-                              ),
-                              TextSpan(
-                                text: 'Terms & Privacy Policy',
-                                style: TextStyle(color: kForestGreen),
-                              ),
-                            ],
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
+                        ],
                       ),
                     ],
                   ),
