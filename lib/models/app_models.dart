@@ -8,6 +8,7 @@ class ServiceCategory {
   final String id;
   final String name;
   final String nameUrdu;
+  final String imageAsset;
   final IconData icon;
   final Color iconColor;
   bool active;
@@ -16,6 +17,7 @@ class ServiceCategory {
     required this.id,
     required this.name,
     required this.nameUrdu,
+    required this.imageAsset,
     required this.icon,
     required this.iconColor,
     this.active = true,

@@ -26,18 +26,18 @@ class HunarAppData extends ChangeNotifier {
   String sortBy = 'best';
 
   List<ServiceCategory> services = [
-    ServiceCategory(id: 's1', name: 'Electrician', nameUrdu: 'بجلی کا کام', icon: Icons.lightbulb_outlined, iconColor: Colors.amber.shade700),
-    ServiceCategory(id: 's2', name: 'Plumber', nameUrdu: 'پلمبر', icon: Icons.water_drop_outlined, iconColor: Colors.blue.shade600),
-    ServiceCategory(id: 's3', name: 'AC Repair', nameUrdu: 'اے سی ریپئر', icon: Icons.ac_unit_outlined, iconColor: Colors.cyan.shade600),
-    ServiceCategory(id: 's5', name: 'Mechanic', nameUrdu: 'میکینک', icon: Icons.build_outlined, iconColor: Colors.blueGrey),
-    ServiceCategory(id: 's4', name: 'Painter', nameUrdu: 'پینٹر', icon: Icons.format_paint_outlined, iconColor: Colors.teal),
-    ServiceCategory(id: 's6', name: 'Carpenter', nameUrdu: 'کارپینٹر', icon: Icons.handyman_outlined, iconColor: Colors.brown),
-    ServiceCategory(id: 's10', name: 'Cleaning', nameUrdu: 'صفائی کا کام', icon: Icons.cleaning_services_outlined, iconColor: Colors.orange.shade800),
-    ServiceCategory(id: 's7', name: 'Tutor', nameUrdu: 'ٹیوٹر', icon: Icons.school_outlined, iconColor: Colors.indigo),
-    ServiceCategory(id: 's8', name: 'Tailor', nameUrdu: 'درزی', icon: Icons.content_cut_outlined, iconColor: Colors.pink.shade700),
-    ServiceCategory(id: 's9', name: 'Cook', nameUrdu: 'کک / باورچی', icon: Icons.restaurant_outlined, iconColor: Colors.deepOrange),
-    ServiceCategory(id: 's11', name: 'Gardener', nameUrdu: 'مالی / باغبانی', icon: Icons.eco_outlined, iconColor: Colors.green.shade700),
-    ServiceCategory(id: 's12', name: 'More', nameUrdu: 'مزید', icon: Icons.more_horiz, iconColor: kForestGreen),
+    ServiceCategory(id: 's1', name: 'Electrician', nameUrdu: 'بجلی کا کام', imageAsset: 'assets/images/services/electrician.png', icon: Icons.lightbulb_outlined, iconColor: Colors.amber.shade700),
+    ServiceCategory(id: 's2', name: 'Plumber', nameUrdu: 'پلمبر', imageAsset: 'assets/images/services/plumber.png', icon: Icons.water_drop_outlined, iconColor: Colors.blue.shade600),
+    ServiceCategory(id: 's3', name: 'AC Repair', nameUrdu: 'اے سی ریپئر', imageAsset: 'assets/images/services/ac-repair.png', icon: Icons.ac_unit_outlined, iconColor: Colors.cyan.shade600),
+    ServiceCategory(id: 's5', name: 'Mechanic', nameUrdu: 'میکینک', imageAsset: 'assets/images/services/mechanic.png', icon: Icons.build_outlined, iconColor: Colors.blueGrey),
+    ServiceCategory(id: 's4', name: 'Painter', nameUrdu: 'پینٹر', imageAsset: 'assets/images/services/painter.png', icon: Icons.format_paint_outlined, iconColor: Colors.teal),
+    ServiceCategory(id: 's6', name: 'Carpenter', nameUrdu: 'کارپینٹر', imageAsset: 'assets/images/services/carpenter.png', icon: Icons.handyman_outlined, iconColor: Colors.brown),
+    ServiceCategory(id: 's10', name: 'Cleaning', nameUrdu: 'صفائی کا کام', imageAsset: 'assets/images/services/cleaning.png', icon: Icons.cleaning_services_outlined, iconColor: Colors.orange.shade800),
+    ServiceCategory(id: 's7', name: 'Tutor', nameUrdu: 'ٹیوٹر', imageAsset: 'assets/images/services/tutor.png', icon: Icons.school_outlined, iconColor: Colors.indigo),
+    ServiceCategory(id: 's8', name: 'Tailor', nameUrdu: 'درزی', imageAsset: 'assets/images/services/tailor.png', icon: Icons.content_cut_outlined, iconColor: Colors.pink.shade700),
+    ServiceCategory(id: 's9', name: 'Cook', nameUrdu: 'کک / باورچی', imageAsset: 'assets/images/services/cook.png', icon: Icons.restaurant_outlined, iconColor: Colors.deepOrange),
+    ServiceCategory(id: 's11', name: 'Gardener', nameUrdu: 'مالی / باغبانی', imageAsset: 'assets/images/services/gardener.png', icon: Icons.eco_outlined, iconColor: Colors.green.shade700),
+    ServiceCategory(id: 's12', name: 'More', nameUrdu: 'مزید', imageAsset: 'assets/images/services/more.png', icon: Icons.more_horiz, iconColor: kForestGreen),
   ];
 
   List<LocationItem> locations = [

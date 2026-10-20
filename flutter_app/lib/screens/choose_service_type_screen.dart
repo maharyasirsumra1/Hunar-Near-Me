@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import '../providers/app_state.dart';
 import '../theme/app_theme.dart';
+import '../widgets/service_vector_icons.dart';
 
 // ============================================================================
-// PAGE 4: CHOOSE SERVICE TYPE (Matching Mockup Screenshot 2)
+// PAGE 4: CHOOSE SERVICE TYPE (Exact Match to Reference Screenshot)
 // ============================================================================
 
 class ChooseServiceTypeScreen extends StatefulWidget {
@@ -42,7 +43,7 @@ class _ChooseServiceTypeScreenState extends State<ChooseServiceTypeScreen> {
                     crossAxisCount: 3,
                     crossAxisSpacing: 12,
                     mainAxisSpacing: 12,
-                    childAspectRatio: 0.9,
+                    childAspectRatio: 0.88,
                   ),
                   itemBuilder: (ctx, i) {
                     final s = app.services[i];
@@ -54,6 +55,7 @@ class _ChooseServiceTypeScreenState extends State<ChooseServiceTypeScreen> {
                       },
                       borderRadius: BorderRadius.circular(16),
                       child: Container(
+                        padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: isSelected ? kCardGreenTint : Colors.white,
                           borderRadius: BorderRadius.circular(16),
@@ -65,10 +67,9 @@ class _ChooseServiceTypeScreenState extends State<ChooseServiceTypeScreen> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            CircleAvatar(
-                              radius: 22,
-                              backgroundColor: kCardGreenTint,
-                              child: Icon(s.icon, color: s.iconColor, size: 24),
+                            ServiceVectorIcon(
+                              serviceId: s.id,
+                              size: 56,
                             ),
                             const SizedBox(height: 8),
                             Text(
