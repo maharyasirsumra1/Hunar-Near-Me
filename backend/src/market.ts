@@ -62,8 +62,7 @@ export class PublicController {
   const take=Math.min(50,Math.max(1,parseInt(q.limit||'30',10)||30));
   const lat=q.lat!==undefined?Number(q.lat):undefined,lng=q.lng!==undefined?Number(q.lng):undefined;
   if((lat===undefined)!==(lng===undefined))throw new BadRequestException('Both lat and lng are required');assertLatLng(lat,lng);
-  const requestedRadiusKm=Number(q.radiusKm||25);
-  const radiusKm=Number.isFinite(requestedRadiusKm)?Math.min(100,Math.max(1,requestedRadiusKm)):25;
+  const radiusKm=Math.min(100,Math.max(1,Number(q.radiusKm||25)));
   const list=await this.profiles.find({where:{status:WorkerStatus.APPROVED},take:500});
   const selected=list.filter(w=>(!q.serviceId||w.serviceIds.includes(q.serviceId))&&(!q.cityId||w.cityId===q.cityId)&&(!q.areaId||w.areaId===q.areaId));
   const ids=selected.map(x=>x.userId);const users=ids.length?await this.users.findBy({id:In(ids),active:true}):[];const byId=new Map(users.map(u=>[u.id,u]));
