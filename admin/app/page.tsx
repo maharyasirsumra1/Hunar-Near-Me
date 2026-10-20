@@ -1,23 +1,22 @@
 'use client';
 import {useEffect,useState} from 'react';
-import {LayoutDashboard,UsersRound,HardHat,Wallet,Grid2X2,MapPin,Star,ClipboardList,SlidersHorizontal,ScrollText,LogOut,RefreshCw,Megaphone} from 'lucide-react';
+import {RefreshCw} from 'lucide-react';
+import {AdminLogin} from './components/admin-login';
+import {AdminSidebar} from './components/admin-sidebar';
+import {date, Field, status, titles} from './components/admin-ui';
+import type {AdminTab} from './components/admin-ui';
 
 type Dict=Record<string,any>;
-const tabs=[['overview','Overview',LayoutDashboard],['workers','Worker Approvals',HardHat],['customers','Customers',UsersRound],['payments','Fee Verification',Wallet],['services','Services',Grid2X2],['locations','Pakistan Locations',MapPin],['reviews','Reviews',Star],['bookings','Bookings',ClipboardList],['content','App Labels & Images',SlidersHorizontal],['notifications','Announcements',Megaphone],['audit','Audit Log',ScrollText]] as const;
 async function api(path:string,method='GET',body?:unknown){const res=await fetch('/api/backend/'+path,{method,headers:body instanceof FormData?undefined:{'Content-Type':'application/json'},body:body===undefined?undefined:body instanceof FormData?body:JSON.stringify(body),cache:'no-store'});const text=await res.text();let payload:any;try{payload=JSON.parse(text)}catch{payload={message:text||'Unexpected API reply'}}if(!res.ok)throw new Error(typeof payload.message==='string'?payload.message:JSON.stringify(payload.message||'Request failed'));return payload;}
-const date=(s:string)=>s?new Date(s).toLocaleDateString('en-PK',{month:'short',day:'numeric',year:'numeric'}):'—';
-const status=(s:string)=><span className={'status '+s}>{s}</span>;
-const Field=({label,value,onChange,placeholder,type='text'}:{label:string,value:any,onChange:(v:string)=>void,placeholder?:string,type?:string})=><label className="field">{label}<input type={type} placeholder={placeholder} value={value??''} onChange={e=>onChange(e.target.value)}/></label>;
 export default function Admin(){
  const [authed,setAuthed]=useState<boolean|null>(null),[phone,setPhone]=useState(''),[password,setPassword]=useState('');
- const [tab,setTab]=useState('overview'),[error,setError]=useState(''),[notice,setNotice]=useState(''),[busy,setBusy]=useState(false),[records,setRecords]=useState<any>(null);
+ const [tab,setTab]=useState<AdminTab>('overview'),[error,setError]=useState(''),[notice,setNotice]=useState(''),[busy,setBusy]=useState(false),[records,setRecords]=useState<any>(null);
  const [feeNotes,setFeeNotes]=useState<Record<string,string>>({});
  const [service,setService]=useState<Dict>({name:'',nameUrdu:'',slug:'',icon:'wrench',imageUrl:'',sortOrder:12,active:true});
  const [location,setLocation]=useState<Dict>({name:'',kind:'province',parentId:'',latitude:'',longitude:'',active:true});
  const [allLocations,setAllLocations]=useState<any[]>([]),[rawConfig,setRawConfig]=useState(''),[config,setConfig]=useState<Dict>({});
  const [targetImage,setTargetImage]=useState('welcomeHero');
  const [announcement,setAnnouncement]=useState({audience:'all',title:'',message:''});
- const titles:Record<string,string>={overview:'Dashboard',workers:'Worker Applications',customers:'Customer Management',notifications:'Announcements',payments:'Fee Verification',services:'Service Types',locations:'Location Management',reviews:'Customer Reviews',bookings:'Bookings & Requests',content:'App Content & Branding',audit:'Admin Activity'};
  async function load(which=tab){setError('');try{let path:Record<string,string>={overview:'summary',workers:'workers',customers:'customers',notifications:'summary',payments:'payments',services:'services',locations:'locations',reviews:'reviews',bookings:'bookings',content:'config',audit:'audit'};let data=await api(path[which]);setRecords(data);setAuthed(true);if(which==='content'){setConfig(data);setRawConfig(JSON.stringify(data,null,2))}if(which==='locations')setAllLocations(data);if(which==='services'||which==='workers'){api('locations').then(setAllLocations).catch(()=>{})}}catch(e:any){if(e.message?.includes('authenticated')||e.message?.includes('expired'))setAuthed(false);else setError(e.message)}}
  useEffect(()=>{load('overview')},[]);
  useEffect(()=>{if(authed&&tab!=='overview')load(tab)},[tab]);
@@ -25,9 +24,9 @@ export default function Admin(){
  async function login(e:React.FormEvent){e.preventDefault();setBusy(true);setError('');try{const res=await fetch('/api/session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone,password})});const data=await res.json();if(!res.ok)throw new Error(data.message||'Unable to login');setAuthed(true);setPassword('');await load('overview')}catch(e:any){setError(e.message)}finally{setBusy(false)}}
  async function logout(){await fetch('/api/session',{method:'DELETE'});setAuthed(false);setRecords(null)}
  if(authed===null)return <div className="login"><div className="loginbox">Connecting to Hunar Near Me…</div></div>;
- if(!authed)return <div className="login"><form onSubmit={login} className="loginbox"><h1>Hunar Near Me</h1><p>Secure Administrator Login</p><Field label="Admin mobile number" value={phone} onChange={setPhone} placeholder="03001234567"/><Field label="Password" type="password" value={password} onChange={setPassword}/><button disabled={busy} className="btn" style={{width:'100%'}}>{busy?'Signing in…':'Sign in to Admin Panel'}</button>{error&&<div className="error">{error}</div>}<p className="hint" style={{marginTop:18}}>Your initial admin credentials are defined in backend/.env. Never share them or use a demo password on a public server.</p></form></div>;
+ if(!authed)return <AdminLogin phone={phone} password={password} busy={busy} error={error} onPhoneChange={setPhone} onPasswordChange={setPassword} onSubmit={login}/>;
  return <div className="layout">
-  <aside className="sidebar"><div className="brand">🔧 Hunar Near Me<small>Business Control Center</small></div>{tabs.map(([id,label,Icon])=><button key={id} className={'nav '+(tab===id?'active':'')} onClick={()=>{setTab(id);setNotice('');setError('')}}><Icon size={18}/>{label}</button>)}<div className="spacer"/><button className="nav" onClick={logout}><LogOut size={18}/>Logout</button></aside>
+  <AdminSidebar activeTab={tab} onSelect={(selectedTab)=>{setTab(selectedTab);setNotice('');setError('')}} onLogout={logout}/>
   <main className="main"><header className="topbar"><div><h1>{titles[tab]}</h1><div className="subtitle">Manage your marketplace securely from one place</div></div><div className="flex"><span className="badge">Administrator</span><button className="btn secondary" onClick={()=>load()} title="Refresh"><RefreshCw size={16}/></button></div></header>
   {error&&<div className="error">{error}</div>}{notice&&<div className="ok">{notice}</div>}
   {tab==='overview'&&records&&<><div className="cards">{Object.entries(records).map(([k,v])=><div key={k} className="card"><span>{k.replace(/([A-Z])/g,' $1').replace(/^./,c=>c.toUpperCase())}</span><b>{String(v)}</b></div>)}</div><div className="panel"><h2>How worker approval works</h2><p>1. Worker verifies their phone → 2. Completes skills, city and location → 3. Sends EasyPaisa / JazzCash reference, optionally with a screenshot → 4. Admin verifies payment → 5. Admin approves the profile.</p><p className="hint">Approving a worker with missing skills, coordinates or required verified fees is blocked by the API. Ratings displayed to customers come from completed-booking reviews.</p></div></>}
