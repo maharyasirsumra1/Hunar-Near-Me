@@ -427,84 +427,139 @@ Widget buildCustomInputField({
   bool isPassword = false,
   String? footnote,
 }) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        label,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 13,
-          color: kDarkInk,
-        ),
-      ),
-      const SizedBox(height: 6),
-      TextField(
-        controller: controller,
-        obscureText: isPassword,
-        keyboardType: isPhone ? TextInputType.phone : TextInputType.text,
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: const TextStyle(color: kMutedText, fontSize: 12),
-          isDense: true,
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 12,
-            vertical: 12,
+  return _CustomInputField(
+    label: label,
+    controller: controller,
+    hintText: hintText,
+    prefixIcon: prefixIcon,
+    isPhone: isPhone,
+    isPassword: isPassword,
+    footnote: footnote,
+  );
+}
+
+class _CustomInputField extends StatefulWidget {
+  final String label;
+  final TextEditingController controller;
+  final String hintText;
+  final IconData prefixIcon;
+  final bool isPhone;
+  final bool isPassword;
+  final String? footnote;
+
+  const _CustomInputField({
+    required this.label,
+    required this.controller,
+    required this.hintText,
+    required this.prefixIcon,
+    required this.isPhone,
+    required this.isPassword,
+    this.footnote,
+  });
+
+  @override
+  State<_CustomInputField> createState() => _CustomInputFieldState();
+}
+
+class _CustomInputFieldState extends State<_CustomInputField> {
+  bool _obscurePassword = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          widget.label,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 13,
+            color: kDarkInk,
           ),
-          prefixIcon: isPhone
-              ? Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(width: 8),
-                    Icon(prefixIcon, color: kMutedText, size: 18),
-                    const SizedBox(width: 5),
-                    Container(width: 1, height: 14, color: kBorderColor),
-                    Flexible(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text(
-                              '+92',
-                              maxLines: 1,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 11,
+        ),
+        const SizedBox(height: 6),
+        TextField(
+          controller: widget.controller,
+          obscureText: widget.isPassword && _obscurePassword,
+          keyboardType: widget.isPhone
+              ? TextInputType.phone
+              : TextInputType.text,
+          decoration: InputDecoration(
+            hintText: widget.hintText,
+            hintStyle: const TextStyle(color: kMutedText, fontSize: 12),
+            isDense: true,
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 12,
+            ),
+            prefixIcon: widget.isPhone
+                ? Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(width: 8),
+                      Icon(widget.prefixIcon, color: kMutedText, size: 18),
+                      const SizedBox(width: 5),
+                      Container(width: 1, height: 14, color: kBorderColor),
+                      Flexible(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                '+92',
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 11,
+                                  color: kDarkInk,
+                                ),
+                              ),
+                              const Icon(
+                                Icons.arrow_drop_down,
+                                size: 16,
                                 color: kDarkInk,
                               ),
-                            ),
-                            const Icon(
-                              Icons.arrow_drop_down,
-                              size: 16,
-                              color: kDarkInk,
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
+                      Container(width: 1, height: 14, color: kBorderColor),
+                      const SizedBox(width: 6),
+                    ],
+                  )
+                : Icon(widget.prefixIcon, color: kMutedText, size: 20),
+            prefixIconConstraints: widget.isPhone
+                ? const BoxConstraints(minWidth: 92, minHeight: 44)
+                : null,
+            suffixIcon: widget.isPassword
+                ? IconButton(
+                    tooltip: _obscurePassword
+                        ? 'Show password'
+                        : 'Hide password',
+                    onPressed: () {
+                      setState(() => _obscurePassword = !_obscurePassword);
+                    },
+                    icon: Icon(
+                      _obscurePassword
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
+                      color: kMutedText,
+                      size: 20,
                     ),
-                    Container(width: 1, height: 14, color: kBorderColor),
-                    const SizedBox(width: 6),
-                  ],
-                )
-              : Icon(prefixIcon, color: kMutedText, size: 20),
-          prefixIconConstraints: isPhone
-              ? const BoxConstraints(minWidth: 92, minHeight: 44)
-              : null,
-          suffixIcon: isPassword
-              ? const Icon(
-                  Icons.visibility_outlined,
-                  color: kMutedText,
-                  size: 20,
-                )
-              : null,
+                  )
+                : null,
+          ),
         ),
-      ),
-      if (footnote != null) ...[
-        const SizedBox(height: 4),
-        Text(footnote, style: const TextStyle(color: kMutedText, fontSize: 11)),
+        if (widget.footnote != null) ...[
+          const SizedBox(height: 4),
+          Text(
+            widget.footnote!,
+            style: const TextStyle(color: kMutedText, fontSize: 11),
+          ),
+        ],
+        const SizedBox(height: 14),
       ],
-      const SizedBox(height: 14),
-    ],
-  );
+    );
+  }
 }

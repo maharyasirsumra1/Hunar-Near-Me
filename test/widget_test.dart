@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hunarnearme/main.dart';
 import 'package:hunarnearme/providers/app_state.dart';
 import 'package:hunarnearme/screens/customer_register_screen.dart';
+import 'package:hunarnearme/theme/app_theme.dart';
 
 void main() {
   testWidgets('App smoke test', (WidgetTester tester) async {
@@ -11,6 +12,45 @@ void main() {
 
     // Verify that the app title 'Hunar Near Me' is rendered
     expect(find.textContaining('Hunar Near Me'), findsWidgets);
+  });
+
+  testWidgets('Password field can be shown and hidden', (
+    WidgetTester tester,
+  ) async {
+    final controller = TextEditingController(text: 'secret123');
+    addTearDown(controller.dispose);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: buildCustomInputField(
+            label: 'Password',
+            controller: controller,
+            hintText: 'Enter your password',
+            prefixIcon: Icons.lock_outline,
+            isPassword: true,
+          ),
+        ),
+      ),
+    );
+
+    expect(
+      tester.widget<TextField>(find.byType(TextField)).obscureText,
+      isTrue,
+    );
+    await tester.tap(find.byTooltip('Show password'));
+    await tester.pump();
+    expect(
+      tester.widget<TextField>(find.byType(TextField)).obscureText,
+      isFalse,
+    );
+
+    await tester.tap(find.byTooltip('Hide password'));
+    await tester.pump();
+    expect(
+      tester.widget<TextField>(find.byType(TextField)).obscureText,
+      isTrue,
+    );
   });
 
   testWidgets('Customer registration shows errors before continuing', (
